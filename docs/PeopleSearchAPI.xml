@@ -1,0 +1,390 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PeopleSearchAPI</name>
+    </assembly>
+    <members>
+        <member name="T:PeopleSearchAPI.Controllers.UserController">
+            <summary>
+            Provides the APIs for handling all the user logic
+            </summary>
+        </member>
+        <member name="F:PeopleSearchAPI.Controllers.UserController._userService">
+            <summary>
+            Object of class <see cref="T:PeopleSearch.Services.Interfaces.IUserService"/> providing the APIs for managing user in a persistence store.
+            </summary>
+        </member>
+        <member name="F:PeopleSearchAPI.Controllers.UserController._mapper">
+            <summary>
+            Object of class <see cref="T:AutoMapper.IMapper"/> for models mapping
+            </summary>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.UserController.#ctor(PeopleSearch.Services.Interfaces.IUserService,AutoMapper.IMapper)">
+            <summary>
+            Creates an instance of the <see cref="T:PeopleSearchAPI.Controllers.UserController"/>.
+            </summary>
+            <param name="userService"> Object of class providing the APIs for managing user in a persistence store. </param>
+            <param name="mapper"> Object of class <see cref="T:AutoMapper.IMapper"/> for models mapping </param>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.UserController.GetById(System.Guid)">
+            <summary>
+            Get the user information by Id
+            </summary>
+            <param name="userId"> User Id </param>
+            <returns> The task object containing the action result of getting user information </returns>
+            <response code="200"> Successful completion </response>
+            <response code="404"> User with this Id wasn't founded </response>
+            <response code="401"> Unauthorized </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.UserController.GetAccessToken(PeopleSearchAPI.Models.DTO.Requests.GetAccessTokenDTORequest)">
+            <summary>
+            Get new access token with refresh token
+            </summary>
+            <param name="model"> Model of request for get access token </param>
+            <returns> The task object containing the action result of get access token </returns>
+            <response code="200"> Successful completion </response>
+            <response code="403"> Insecure request </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.UserController.Registration(PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest)">
+            <summary>
+            Registration of the new user
+            </summary>
+            <param name="model"> Registration data transfer object </param>
+            <returns> The task object containing the authorization result </returns>
+            <response code="201"> User registrated </response>
+            <response code="400"> Incorrect data was sent during registration </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.UserController.Login(PeopleSearchAPI.Models.DTO.Requests.LoginDTORequest)">
+            <summary>
+            Authorization of the user
+            </summary>
+            <param name="model"> Login data transfer object </param>
+            <returns> The task object containing the authorization result </returns>
+            <response code="200"> Successful completion </response>
+            <response code="404"> Incorrect data was sent during authorization </response>
+            <response code="401"> Incorrect password </response>
+            <response code="403"> Already authorized </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.UserController.Logout">
+            <summary>
+            Logout from account
+            </summary>
+            <returns> The task object </returns>
+            <response code="204"> Successful completion </response>
+            <response code="401"> Unauthorized </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.UserController.Update(PeopleSearchAPI.Models.DTO.Requests.UserDTORequest,System.Guid)">
+            <summary>
+             Update of user date
+             </summary>
+             <param name="model"> User data DTO </param>
+             <param name="userId"> User Id </param>
+             <returns> Task object contaning request result </returns>
+             <response code="200"> Successful completion </response>
+             <response code="400"> Bad request </response>
+             <response code="401"> Unauthorized </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.UserController.ChangePassword(PeopleSearchAPI.Models.DTO.Requests.ChangePasswordDTORequest)">
+            <summary>
+             Change password
+             </summary>
+             <param name="model"> Stores data for changing password </param>
+             <returns> Task object contaning action result of changing password </returns>
+             <response code="204"> Successful completion </response>
+             <response code="400"> Bad request </response>
+             <response code="401"> Unauthorized </response>
+        </member>
+        <member name="T:PeopleSearchAPI.Helpers.CustomAuthorizeAttribute">
+            <summary>
+            Specifies that the class or method that this attribute is applied to requires the specified authorization.
+            </summary>
+        </member>
+        <member name="M:PeopleSearchAPI.Helpers.CustomAuthorizeAttribute.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)">
+            <inheritdoc/>
+        </member>
+        <member name="T:PeopleSearchAPI.Helpers.LoginAttribute">
+            <summary>
+            Specifies that the class or method that this attribute is applied to don't requires the specified authorization
+            </summary>
+        </member>
+        <member name="M:PeopleSearchAPI.Helpers.LoginAttribute.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)">
+            <inheritdoc/>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.AddressDTO">
+            <summary>
+            Address data transfer object
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.AddressDTO.City">
+            <summary>
+            City
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.AddressDTO.Street">
+            <summary>
+            Street
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.AddressDTO.NumberOfHome">
+            <summary>
+            Number of home
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.AddressDTO.ApartmentNumber">
+            <summary>
+            Apartment number
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.AddressDTO.PostalCode">
+            <summary>
+            Postal code
+            </summary>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Requests.ChangePasswordDTORequest">
+            <summary>
+            Stores data for changing password
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.ChangePasswordDTORequest.Email">
+            <summary>
+            User Email
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.ChangePasswordDTORequest.OldPassword">
+            <summary>
+            Old password
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.ChangePasswordDTORequest.NewPassword">
+            <summary>
+            New password
+            </summary>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Requests.GetAccessTokenDTORequest">
+            <summary>
+            Model of request for get access token
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.GetAccessTokenDTORequest.RefreshToken">
+            <summary>
+            Refresh token
+            </summary>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Requests.LoginDTORequest">
+            <summary>
+            Login data transfer object
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.LoginDTORequest.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.LoginDTORequest.Password">
+            <summary>
+            Password
+            </summary>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest">
+            <summary>
+            Registration data transfer object
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.BirthDate">
+            <summary>
+            BirthDate
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.Password">
+            <summary>
+            Password
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.PasswordConfirm">
+            <summary>
+            Password confirm
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.PhoneNumber">
+            <summary>
+            Phone number
+            </summary>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest">
+            <summary>
+            Registration data transfer object
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest.BirthDate">
+            <summary>
+            BirthDate
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest.Password">
+            <summary>
+            Password
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest.PasswordConfirm">
+            <summary>
+            Password confirm
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest.Role">
+            <summary>
+            User role
+            </summary>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Requests.RoleDTO">
+            <summary>
+            User role data transfer object
+            </summary>
+        </member>
+        <member name="F:PeopleSearchAPI.Models.DTO.Requests.RoleDTO.Admin">
+            <summary>
+            Administrator
+            </summary>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Requests.UserDTORequest">
+            <summary>
+            Data transfer object for changing user data
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.UserDTORequest.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.UserDTORequest.Surname">
+            <summary>
+            Surname
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.UserDTORequest.BirthDate">
+            <summary>
+            BirthDate
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.UserDTORequest.Address">
+            <summary>
+            Address data transfer object
+            </summary>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse">
+            <summary>
+            The data transfer object of the response containing the access token and refresh token
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse.UserId">
+            <summary>
+            User Id
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse.ExpiresIn">
+            <summary>
+            Access token lifetime in seconds
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse.TokenType">
+            <summary>
+            Access token type
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse.AccessToken">
+            <summary>
+            Access token
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse.RefreshToken">
+            <summary>
+            Refresh token
+            </summary>
+        </member>
+        <member name="M:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse.#ctor(System.Int32,System.String,System.String,System.String,System.Guid)">
+            <summary>
+            Creates an instance of the <see cref="T:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse"/>.
+            </summary>
+            <param name="expiresIn"> Access token lifetime in seconds </param>
+            <param name="accessToken"> Access token </param>
+            <param name="refreshToken"> Refresh token </param>
+            <param name="tokenType"> Access token type </param>
+            <param name="userId"> userId </param>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Response.IdentityErrorsDTOResponse">
+            <summary>
+            The data transfer object of the response containing the identity errors
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.IdentityErrorsDTOResponse.Errors">
+            <summary>
+            Identity errors list
+            </summary>
+        </member>
+        <member name="M:PeopleSearchAPI.Models.DTO.Response.IdentityErrorsDTOResponse.#ctor(System.Collections.Generic.IEnumerable{Microsoft.AspNetCore.Identity.IdentityError})">
+            <summary>
+            Creates an instance of the <see cref="T:PeopleSearchAPI.Models.DTO.Response.IdentityErrorsDTOResponse"/>.
+            </summary>
+            <param name="errors"> Identity errors list </param>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Response.IDTOResponse">
+            <summary>
+            Identity response interface
+            </summary>
+        </member>
+        <member name="T:PeopleSearchAPI.Models.DTO.Response.UserDTOResponse">
+            <summary>
+            The data transfer object of the response containing the user data
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.UserDTOResponse.Id">
+            <summary>
+            User Id
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.UserDTOResponse.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.UserDTOResponse.PhoneNumber">
+            <summary>
+            Phone number
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.UserDTOResponse.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.UserDTOResponse.Surname">
+            <summary>
+            Surname
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.UserDTOResponse.BirthDate">
+            <summary>
+            BirthDate
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.UserDTOResponse.Address">
+            <summary>
+            Address data transfer object
+            </summary>
+        </member>
+    </members>
+</doc>

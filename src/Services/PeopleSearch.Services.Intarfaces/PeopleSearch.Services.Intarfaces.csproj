@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\PeopleSearch.Domain.Interfaces\PeopleSearch.Domain.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -3,7 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearchAPI", "PeopleSearchAPI.csproj", "{4D4366BD-025C-4177-9073-DDA8DAE8F8AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeopleSearchAPI", "PeopleSearchAPI.csproj", "{4D4366BD-025C-4177-9073-DDA8DAE8F8AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{B77623C4-A7FA-4FF5-9BDC-423EF2592FC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{2D928B0B-1F6E-4711-87D2-5939CF44D783}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{E940A112-E790-417B-B401-448970D5FF0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearch.Domain.Core", "..\Domain\PeopleSearch.Domain.Core\PeopleSearch.Domain.Core.csproj", "{F8294D76-7F3E-444C-A897-0AAEED3D9554}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearch.Domain.Interfaces", "..\Domain\PeopleSearch.Domain.Interfaces\PeopleSearch.Domain.Interfaces.csproj", "{27A1183E-3178-43AF-AB02-424672E098C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearch.Infrastructure.Business", "..\Infrastructure\PeopleSearch.Infrastructure.Business\PeopleSearch.Infrastructure.Business.csproj", "{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearch.Infrastructure.Data", "..\Infrastructure\PeopleSearch.Infrastructure.Data\PeopleSearch.Infrastructure.Data.csproj", "{A7E15E32-91DB-4E25-B7D7-51915ABB280E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearch.Services.Intarfaces", "..\Services\PeopleSearch.Services.Intarfaces\PeopleSearch.Services.Intarfaces.csproj", "{F69657D9-014B-4FBD-9F45-123C9B9624FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +31,36 @@ Global
 		{4D4366BD-025C-4177-9073-DDA8DAE8F8AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D4366BD-025C-4177-9073-DDA8DAE8F8AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D4366BD-025C-4177-9073-DDA8DAE8F8AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8294D76-7F3E-444C-A897-0AAEED3D9554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8294D76-7F3E-444C-A897-0AAEED3D9554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8294D76-7F3E-444C-A897-0AAEED3D9554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8294D76-7F3E-444C-A897-0AAEED3D9554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27A1183E-3178-43AF-AB02-424672E098C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27A1183E-3178-43AF-AB02-424672E098C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27A1183E-3178-43AF-AB02-424672E098C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27A1183E-3178-43AF-AB02-424672E098C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7E15E32-91DB-4E25-B7D7-51915ABB280E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E15E32-91DB-4E25-B7D7-51915ABB280E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E15E32-91DB-4E25-B7D7-51915ABB280E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E15E32-91DB-4E25-B7D7-51915ABB280E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F69657D9-014B-4FBD-9F45-123C9B9624FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F69657D9-014B-4FBD-9F45-123C9B9624FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F69657D9-014B-4FBD-9F45-123C9B9624FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F69657D9-014B-4FBD-9F45-123C9B9624FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F8294D76-7F3E-444C-A897-0AAEED3D9554} = {B77623C4-A7FA-4FF5-9BDC-423EF2592FC0}
+		{27A1183E-3178-43AF-AB02-424672E098C9} = {B77623C4-A7FA-4FF5-9BDC-423EF2592FC0}
+		{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F} = {2D928B0B-1F6E-4711-87D2-5939CF44D783}
+		{A7E15E32-91DB-4E25-B7D7-51915ABB280E} = {2D928B0B-1F6E-4711-87D2-5939CF44D783}
+		{F69657D9-014B-4FBD-9F45-123C9B9624FB} = {E940A112-E790-417B-B401-448970D5FF0F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB4EBF23-EB66-415E-8E3F-C5B0787D22D4}

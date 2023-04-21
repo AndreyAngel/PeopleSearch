@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PeopleSearch.Domain.Core\PeopleSearch.Domain.Core.csproj" />
+  </ItemGroup>
+
 </Project>

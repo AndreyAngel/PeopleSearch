@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\PeopleSearch.Domain.Core\PeopleSearch.Domain.Core.csproj" />
+    <ProjectReference Include="..\..\Domain\PeopleSearch.Domain.Interfaces\PeopleSearch.Domain.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>
