@@ -31,11 +31,4 @@ public class RegisterDTORequest
     [Required]
     [Compare("Password")]
     public string? PasswordConfirm { get; set; }
-
-    /// <summary>
-    /// User role
-    /// </summary>
-    [Required]
-    [Range(0, 2, ErrorMessage = "Incorrect role")]
-    public RoleDTO Role { get; set; }
 }

@@ -6,7 +6,7 @@
 public enum Role
 {
     /// <summary>
-    /// Administrator
+    /// User
     /// </summary>
-    Admin
+    User
 }

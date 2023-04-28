@@ -11,6 +11,7 @@ using PeopleSearch.Services.Intarfaces.DTO;
 using PeopleSearch.Services.Interfaces;
 using PeopleSearch.Services.Interfaces.Exceptions;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata;
 using System.Security;
 using System.Security.Claims;
 
@@ -19,7 +20,7 @@ namespace PeopleSearch.Infrastructure.Business;
 /// <summary>
 /// Provides the APIs for managing user in a persistence store.
 /// </summary>
-public class UserService : UserManager<Domain.Core.Entities.User>, IUserService
+public class UserService : UserManager<User>, IUserService
 {
     /// <summary>
     /// Configurations of application
@@ -30,6 +31,9 @@ public class UserService : UserManager<Domain.Core.Entities.User>, IUserService
     /// Object of class <see cref="IMapper"/> for models mapping
     /// </summary>
     private readonly IMapper _mapper;
+
+    /// <inheritdoc/>
+    private readonly RoleManager<IdentityRole> _roleManager;
 
     /// <summary>
     /// True, if object is disposed
@@ -52,19 +56,19 @@ public class UserService : UserManager<Domain.Core.Entities.User>, IUserService
     /// <param name="keyNormalizer">The <see cref="ILookupNormalizer"/> to use when generating index keys for users.</param>
     /// <param name="errors">The <see cref="IdentityErrorDescriber"/> used to provider error messages.</param>
     /// <param name="services">The <see cref="IServiceProvider"/> used to resolve services.</param>
-    /// <param name="mapper"> Object of class <see cref="IMapper"/> for models mapping </param>
+    /// <param name="roleManager"> Provides the APIs for managing roles in a persistence store. </param>
     /// <param name="logger">The logger used to log messages, warnings and errors.</param>
     public UserService( IConfiguration configuration,
                         ICustomUserStore store,
                         IOptions<IdentityOptions> optionsAccessor,
-                        IPasswordHasher<Domain.Core.Entities.User> passwordHasher,
-                        IEnumerable<IUserValidator<Domain.Core.Entities.User>> userValidators,
-                        IEnumerable<IPasswordValidator<Domain.Core.Entities.User>> passwordValidators,
+                        IPasswordHasher<User> passwordHasher,
+                        IEnumerable<IUserValidator<User>> userValidators,
+                        IEnumerable<IPasswordValidator<User>> passwordValidators,
                         ILookupNormalizer keyNormalizer,
                         IdentityErrorDescriber errors,
                         IServiceProvider services,
-                        IMapper mapper,
-                        ILogger<UserManager<Domain.Core.Entities.User>> logger) : base(store,
+                        RoleManager<IdentityRole> roleManager,
+                        ILogger<UserManager<User>> logger) : base(store,
                                                                   optionsAccessor,
                                                                   passwordHasher,
                                                                   userValidators,
@@ -76,11 +80,20 @@ public class UserService : UserManager<Domain.Core.Entities.User>, IUserService
     {
         _configuration = configuration;
         Store = store;
-        _mapper = mapper;
+        _roleManager = roleManager;
+
+        var config = new MapperConfiguration(cfg =>
+        {
+            cfg.CreateMap<User, UserModel>();
+            cfg.CreateMap<UserModel, User>()
+                .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.Email));
+    });
+
+        _mapper = new Mapper(config);
     }
 
     /// <inheritdoc/>
-    public async Task<Domain.Core.Entities.User> GetById(Guid id)
+    public async Task<UserModel> GetById(Guid id)
     {
         ThrowIfDisposed();
         var user = await FindByIdAsync(id.ToString());
@@ -90,7 +103,7 @@ public class UserService : UserManager<Domain.Core.Entities.User>, IUserService
             throw new NotFoundException("User with this Id wasn't founded", nameof(id));
         }
 
-        return user;
+        return _mapper.Map<UserModel>(user);
     }
 
     /// <inheritdoc/>
@@ -108,9 +121,11 @@ public class UserService : UserManager<Domain.Core.Entities.User>, IUserService
     }
 
     /// <inheritdoc/>
-    public async Task<IBaseModel> Register(Domain.Core.Entities.User user, string password, Role role)
+    public async Task<IBaseModel> Register(UserModel userAppDTO, string password, Role role)
     {
         ThrowIfDisposed();
+
+        var user = _mapper.Map<User>(userAppDTO);
         var userRole = new IdentityRole { Name = Enum.GetName(typeof(Role), role) };
         var result = await CreateAsync(user, password);
 
@@ -118,8 +133,16 @@ public class UserService : UserManager<Domain.Core.Entities.User>, IUserService
         {
             return new IdentityErrorsModel(result.Errors);
         }
-        
-        await AddToRoleAsync(user, userRole.Name);
+
+        try
+        {
+            await AddToRoleAsync(user, userRole.Name);
+        }
+        catch (InvalidOperationException)
+        {
+            await _roleManager.CreateAsync(userRole);
+            await AddToRoleAsync(user, userRole.Name);
+        }
 
         var claims = new List<Claim>()
         {
@@ -184,9 +207,11 @@ public class UserService : UserManager<Domain.Core.Entities.User>, IUserService
     }
 
     /// <inheritdoc/>
-    public async Task<IBaseModel?> Update(Domain.Core.Entities.User user, Guid userId)
+    public async Task<IBaseModel?> Update(UserModel userAppDTO, Guid userId)
     {
         ThrowIfDisposed();
+
+        var user = _mapper.Map<User>(userAppDTO);
         var res = await FindByIdAsync(userId.ToString());
 
         if (res == null)
@@ -206,7 +231,7 @@ public class UserService : UserManager<Domain.Core.Entities.User>, IUserService
             return new IdentityErrorsModel(result.Errors);
         }
 
-        var userDTO = _mapper.Map<Services.Intarfaces.DTO.UserModel>(res);
+        var userDTO = _mapper.Map<UserModel>(res);
 
         return userDTO;
     }
@@ -249,7 +274,7 @@ public class UserService : UserManager<Domain.Core.Entities.User>, IUserService
     }
 
     /// <inheritdoc/>
-    private async Task<AuthorizationModel> Login(Domain.Core.Entities.User user, string password)
+    private async Task<AuthorizationModel> Login(User user, string password)
     {
         ThrowIfDisposed();
         if (!await CheckPasswordAsync(user, password))

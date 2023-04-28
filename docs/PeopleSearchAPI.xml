@@ -58,7 +58,7 @@
             <summary>
             Authorization of the user
             </summary>
-            <param name="model"> Login data transfer object </param>
+            <param name="dto"> Login data transfer object </param>
             <returns> The task object containing the authorization result </returns>
             <response code="200"> Successful completion </response>
             <response code="404"> Incorrect data was sent during authorization </response>
@@ -94,6 +94,14 @@
              <response code="400"> Bad request </response>
              <response code="401"> Unauthorized </response>
         </member>
+        <member name="T:PeopleSearchAPI.Helpers.AuthorizeHandler">
+            <summary>
+            Class for authorization handlers that need to be called for a specific requirement type
+            </summary>
+        </member>
+        <member name="M:PeopleSearchAPI.Helpers.AuthorizeHandler.HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Authorization.Infrastructure.RolesAuthorizationRequirement)">
+            <inheritdoc/>
+        </member>
         <member name="T:PeopleSearchAPI.Helpers.CustomAuthorizeAttribute">
             <summary>
             Specifies that the class or method that this attribute is applied to requires the specified authorization.
@@ -115,6 +123,11 @@
             Address data transfer object
             </summary>
         </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.AddressDTO.Region">
+            <summary>
+            Region
+            </summary>
+        </member>
         <member name="P:PeopleSearchAPI.Models.DTO.AddressDTO.City">
             <summary>
             City
@@ -128,16 +141,6 @@
         <member name="P:PeopleSearchAPI.Models.DTO.AddressDTO.NumberOfHome">
             <summary>
             Number of home
-            </summary>
-        </member>
-        <member name="P:PeopleSearchAPI.Models.DTO.AddressDTO.ApartmentNumber">
-            <summary>
-            Apartment number
-            </summary>
-        </member>
-        <member name="P:PeopleSearchAPI.Models.DTO.AddressDTO.PostalCode">
-            <summary>
-            Postal code
             </summary>
         </member>
         <member name="T:PeopleSearchAPI.Models.DTO.Requests.ChangePasswordDTORequest">
@@ -185,41 +188,6 @@
             Password
             </summary>
         </member>
-        <member name="T:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest">
-            <summary>
-            Registration data transfer object
-            </summary>
-        </member>
-        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.Email">
-            <summary>
-            Email
-            </summary>
-        </member>
-        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.BirthDate">
-            <summary>
-            BirthDate
-            </summary>
-        </member>
-        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.Password">
-            <summary>
-            Password
-            </summary>
-        </member>
-        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.PasswordConfirm">
-            <summary>
-            Password confirm
-            </summary>
-        </member>
-        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.Name">
-            <summary>
-            Name
-            </summary>
-        </member>
-        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterCourierDTORequest.PhoneNumber">
-            <summary>
-            Phone number
-            </summary>
-        </member>
         <member name="T:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest">
             <summary>
             Registration data transfer object
@@ -243,21 +211,6 @@
         <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest.PasswordConfirm">
             <summary>
             Password confirm
-            </summary>
-        </member>
-        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest.Role">
-            <summary>
-            User role
-            </summary>
-        </member>
-        <member name="T:PeopleSearchAPI.Models.DTO.Requests.RoleDTO">
-            <summary>
-            User role data transfer object
-            </summary>
-        </member>
-        <member name="F:PeopleSearchAPI.Models.DTO.Requests.RoleDTO.Admin">
-            <summary>
-            Administrator
             </summary>
         </member>
         <member name="T:PeopleSearchAPI.Models.DTO.Requests.UserDTORequest">
@@ -384,6 +337,16 @@
         <member name="P:PeopleSearchAPI.Models.DTO.Response.UserDTOResponse.Address">
             <summary>
             Address data transfer object
+            </summary>
+        </member>
+        <member name="T:IdentityAPI.Helpers.MappingProfile">
+            <summary>
+            Class for models mapping
+            </summary>
+        </member>
+        <member name="M:IdentityAPI.Helpers.MappingProfile.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:IdentityAPI.Helpers.MappingProfile"/>.
             </summary>
         </member>
     </members>

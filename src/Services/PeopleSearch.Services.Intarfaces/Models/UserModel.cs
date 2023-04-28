@@ -39,4 +39,12 @@ public class UserModel : IBaseModel
     /// Address data transfer object
     /// </summary>
     public AddressModel? Address { get; set; }
+
+    /// <summary>
+    /// Constructs a new instance of <see cref="UserModel"/>
+    /// </summary>
+    public UserModel()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
 }

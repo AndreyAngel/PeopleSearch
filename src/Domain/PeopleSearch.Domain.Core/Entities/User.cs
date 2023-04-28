@@ -10,12 +10,12 @@ public class User : IdentityUser
     /// <summary>
     /// Get or set user questionnaire Id
     /// </summary>
-    public Guid UserQuestionnaireId { get; set; }
+    public Guid? UserQuestionnaireId { get; set; }
 
     /// <summary>
     /// Get or set user questionnaire
     /// </summary>
-    public UserQuestionnaire UserQuestionnaire { get; set; }
+    public UserQuestionnaire? UserQuestionnaire { get; set; }
 
     /// <summary>
     /// Gets a registration date

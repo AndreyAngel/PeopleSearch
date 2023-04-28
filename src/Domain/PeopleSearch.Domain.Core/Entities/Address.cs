@@ -11,6 +11,11 @@ public class Address
     public Guid Id { get; set; }
 
     /// <summary>
+    /// Gests or sets a region
+    /// </summary>
+    public string? Region { get; set; }
+
+    /// <summary>
     /// Gets or set a city
     /// </summary>
     public string? City { get; set; }
@@ -24,14 +29,4 @@ public class Address
     /// Gets or sets a number of home
     /// </summary>
     public string? NumberOfHome { get; set; }
-
-    /// <summary>
-    /// Gets or sets a apartment number
-    /// </summary>
-    public string? ApartmentNumber { get; set; }
-
-    /// <summary>
-    /// Gets or sets a postal code
-    /// </summary>
-    public string? PostalCode { get; set; }
 }

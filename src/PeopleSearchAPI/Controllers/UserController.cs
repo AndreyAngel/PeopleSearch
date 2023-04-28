@@ -110,14 +110,14 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Registration(RegisterDTORequest model)
     {
         var user = _mapper.Map<UserModel>(model);
-        var role = Enum.GetName(typeof(Role), model.Role);
-        var result = await _userService.Register(user, model.Password, (Role)Enum.Parse(typeof(Role), role));
+        var result = await _userService.Register(user, model.Password, Role.User);
 
         if (result.GetType() == typeof(IdentityErrorsModel))
         {
             return BadRequest(result);
         }
 
+        //TODO: Решить задачу сохранения всех изменеий после отработки всех сервисов
         //await _userService.Store.Context.SaveChangesAsync();
 
         return Created(new Uri($"https://localhost:44389/api/v1/IdentityAPI/User/GetById/{user.Id}"), result);
@@ -126,7 +126,7 @@ public class UserController : ControllerBase
     /// <summary>
     /// Authorization of the user
     /// </summary>
-    /// <param name="model"> Login data transfer object </param>
+    /// <param name="dto"> Login data transfer object </param>
     /// <returns> The task object containing the authorization result </returns>
     /// <response code="200"> Successful completion </response>
     /// <response code="404"> Incorrect data was sent during authorization </response>

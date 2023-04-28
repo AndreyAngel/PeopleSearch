@@ -8,6 +8,12 @@ namespace PeopleSearchAPI.Models.DTO;
 public class AddressDTO
 {
     /// <summary>
+    /// Region
+    /// </summary>
+    [Required]
+    public string? Region { get; set; }
+
+    /// <summary>
     /// City
     /// </summary>
     [Required]
@@ -22,14 +28,4 @@ public class AddressDTO
     /// Number of home
     /// </summary>
     public string? NumberOfHome { get; set; }
-
-    /// <summary>
-    /// Apartment number
-    /// </summary>
-    public string? ApartmentNumber { get; set; }
-
-    /// <summary>
-    /// Postal code
-    /// </summary>
-    public string? PostalCode { get; set; }
 }
