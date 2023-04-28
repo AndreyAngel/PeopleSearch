@@ -11,7 +11,6 @@ using PeopleSearch.Services.Intarfaces.DTO;
 using PeopleSearch.Services.Interfaces;
 using PeopleSearch.Services.Interfaces.Exceptions;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection.Metadata;
 using System.Security;
 using System.Security.Claims;
 

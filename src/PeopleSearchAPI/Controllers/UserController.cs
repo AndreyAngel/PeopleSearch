@@ -117,7 +117,7 @@ public class UserController : ControllerBase
             return BadRequest(result);
         }
 
-        //TODO: Решить задачу сохранения всех изменеий после отработки всех сервисов
+        //TODO: Решить задачу сохранения всех изменеий после завершения всех процессов
         //await _userService.Store.Context.SaveChangesAsync();
 
         return Created(new Uri($"https://localhost:44389/api/v1/IdentityAPI/User/GetById/{user.Id}"), result);

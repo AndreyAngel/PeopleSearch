@@ -25,5 +25,7 @@ public class MappingProfile : Profile
         CreateMap<AddressDTO, AddressModel>();
 
         CreateMap<AddressModel, AddressDTO>();
+
+        CreateMap<LoginDTORequest, LoginModel>();
     }
 }
