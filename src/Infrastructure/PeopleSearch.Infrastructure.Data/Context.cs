@@ -23,4 +23,6 @@ public class Context : IdentityDbContext<User>
     public DbSet<Address> Addresses { get; set; }
 
     public DbSet<Token> Tokens { get; set; }
+
+    public DbSet<Grade> Grades { get; set; }
 }

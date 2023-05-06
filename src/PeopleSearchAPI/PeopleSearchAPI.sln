@@ -11,15 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{E940A112-E790-417B-B401-448970D5FF0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearch.Domain.Core", "..\Domain\PeopleSearch.Domain.Core\PeopleSearch.Domain.Core.csproj", "{F8294D76-7F3E-444C-A897-0AAEED3D9554}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeopleSearch.Domain.Core", "..\Domain\PeopleSearch.Domain.Core\PeopleSearch.Domain.Core.csproj", "{F8294D76-7F3E-444C-A897-0AAEED3D9554}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearch.Domain.Interfaces", "..\Domain\PeopleSearch.Domain.Interfaces\PeopleSearch.Domain.Interfaces.csproj", "{27A1183E-3178-43AF-AB02-424672E098C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeopleSearch.Infrastructure.Business", "..\Infrastructure\PeopleSearch.Infrastructure.Business\PeopleSearch.Infrastructure.Business.csproj", "{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearch.Infrastructure.Business", "..\Infrastructure\PeopleSearch.Infrastructure.Business\PeopleSearch.Infrastructure.Business.csproj", "{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeopleSearch.Infrastructure.Data", "..\Infrastructure\PeopleSearch.Infrastructure.Data\PeopleSearch.Infrastructure.Data.csproj", "{A7E15E32-91DB-4E25-B7D7-51915ABB280E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearch.Infrastructure.Data", "..\Infrastructure\PeopleSearch.Infrastructure.Data\PeopleSearch.Infrastructure.Data.csproj", "{A7E15E32-91DB-4E25-B7D7-51915ABB280E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeopleSearch.Services.Intarfaces", "..\Services\PeopleSearch.Services.Intarfaces\PeopleSearch.Services.Intarfaces.csproj", "{F69657D9-014B-4FBD-9F45-123C9B9624FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleSearch.Services.Intarfaces", "..\Services\PeopleSearch.Services.Intarfaces\PeopleSearch.Services.Intarfaces.csproj", "{F69657D9-014B-4FBD-9F45-123C9B9624FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeopleSearch.Infrastructure.RecommenderSystem", "..\Infrastructure\PeopleSearch.Infrastructure.RecommenderSystem\PeopleSearch.Infrastructure.RecommenderSystem.csproj", "{C48D502A-43CE-4799-B81E-9906D95FE516}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeopleSearch.Domain.Interfaces", "..\Domain\PeopleSearch.Domain.Interfaces\PeopleSearch.Domain.Interfaces.csproj", "{58C0EBE9-BEC6-4C96-965C-FF7943DF511A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +37,6 @@ Global
 		{F8294D76-7F3E-444C-A897-0AAEED3D9554}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8294D76-7F3E-444C-A897-0AAEED3D9554}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8294D76-7F3E-444C-A897-0AAEED3D9554}.Release|Any CPU.Build.0 = Release|Any CPU
-		{27A1183E-3178-43AF-AB02-424672E098C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27A1183E-3178-43AF-AB02-424672E098C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27A1183E-3178-43AF-AB02-424672E098C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27A1183E-3178-43AF-AB02-424672E098C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,16 +49,25 @@ Global
 		{F69657D9-014B-4FBD-9F45-123C9B9624FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F69657D9-014B-4FBD-9F45-123C9B9624FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F69657D9-014B-4FBD-9F45-123C9B9624FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C48D502A-43CE-4799-B81E-9906D95FE516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C48D502A-43CE-4799-B81E-9906D95FE516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C48D502A-43CE-4799-B81E-9906D95FE516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C48D502A-43CE-4799-B81E-9906D95FE516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58C0EBE9-BEC6-4C96-965C-FF7943DF511A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58C0EBE9-BEC6-4C96-965C-FF7943DF511A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58C0EBE9-BEC6-4C96-965C-FF7943DF511A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58C0EBE9-BEC6-4C96-965C-FF7943DF511A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F8294D76-7F3E-444C-A897-0AAEED3D9554} = {B77623C4-A7FA-4FF5-9BDC-423EF2592FC0}
-		{27A1183E-3178-43AF-AB02-424672E098C9} = {B77623C4-A7FA-4FF5-9BDC-423EF2592FC0}
 		{F54B4CB1-2BCC-49F8-807D-6B2BCC98AF4F} = {2D928B0B-1F6E-4711-87D2-5939CF44D783}
 		{A7E15E32-91DB-4E25-B7D7-51915ABB280E} = {2D928B0B-1F6E-4711-87D2-5939CF44D783}
 		{F69657D9-014B-4FBD-9F45-123C9B9624FB} = {E940A112-E790-417B-B401-448970D5FF0F}
+		{C48D502A-43CE-4799-B81E-9906D95FE516} = {2D928B0B-1F6E-4711-87D2-5939CF44D783}
+		{58C0EBE9-BEC6-4C96-965C-FF7943DF511A} = {B77623C4-A7FA-4FF5-9BDC-423EF2592FC0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB4EBF23-EB66-415E-8E3F-C5B0787D22D4}

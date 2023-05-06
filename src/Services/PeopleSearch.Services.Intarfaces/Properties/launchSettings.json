@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "PeopleSearch.Services.Intarfaces": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:57767;http://localhost:57768"
+    }
+  }
+}

@@ -34,4 +34,21 @@ public class UserQuestionnaire
     /// Gets or sets a address
     /// </summary>
     public Address? Address { get; set; }
+
+    /// <summary>
+    /// Gest or sets count of likes
+    /// </summary>
+    public int Likes { get; set; } = 0;
+
+    /// <summary>
+    /// Gets or sets count of dislikes
+    /// </summary>
+    public int Dislikes { get; set; } = 0;
+
+    /// <summary>
+    /// Gets or sets views
+    /// </summary>
+    public int Views { get; set; } = 0;
+
+    public bool IsPublished { get; set; } = true;
 }

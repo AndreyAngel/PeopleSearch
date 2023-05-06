@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Domain\PeopleSearch.Domain.Core\PeopleSearch.Domain.Core.csproj" />
     <ProjectReference Include="..\..\Domain\PeopleSearch.Domain.Interfaces\PeopleSearch.Domain.Interfaces.csproj" />
   </ItemGroup>
 

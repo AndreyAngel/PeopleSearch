@@ -35,4 +35,6 @@ public interface ICustomUserStore : IUserStore<User>
     /// <param name="value"> Token value </param>
     /// <returns> Task object containing of <see cref="Token"/> </returns>
     Task<Token> GetToken(string value);
+
+    
 }
