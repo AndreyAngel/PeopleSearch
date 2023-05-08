@@ -1,36 +1,43 @@
-﻿namespace PeopleSearchAPI.Models.DTO.Responses;
+﻿using PeopleSearch.Domain.Core.Entities;
+using PeopleSearch.Services.Intarfaces.Models;
 
-public class UserQuestionnaireDTOResponse
+namespace PeopleSearch.Services.Intarfaces.Models;
+
+public class UserQuestionnaireModel
 {
     /// <summary>
-    /// Id
+    /// Get or set a Id
     /// </summary>
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Name
+    /// Gets or sets a name
     /// </summary>
     public string? Name { get; set; }
 
     /// <summary>
-    /// Surname
+    /// Gets or sets a surname
     /// </summary>
     public string? Surname { get; set; }
 
     /// <summary>
-    /// Birth date
+    /// Gets or sets a birth date
     /// </summary>
     public DateTime? BirthDate { get; set; }
 
     /// <summary>
-    /// Address
+    /// Gets or sets a address Id
     /// </summary>
-    public AddressDTO? Address { get; set; }
+    public Guid? AddressId { get; set; }
 
     /// <summary>
-    /// User Id
+    /// Gets or sets a address
     /// </summary>
+    public AddressModel? Address { get; set; }
+
     public Guid UserId { get; set; }
+
+    public UserModel? User { get; set; }
 
     /// <summary>
     /// Gest or sets count of likes

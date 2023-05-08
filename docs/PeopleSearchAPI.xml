@@ -73,17 +73,6 @@
             <response code="204"> Successful completion </response>
             <response code="401"> Unauthorized </response>
         </member>
-        <member name="M:PeopleSearchAPI.Controllers.UserController.Update(PeopleSearchAPI.Models.DTO.Requests.UserDTORequest,System.Guid)">
-            <summary>
-             Update of user date
-             </summary>
-             <param name="model"> User data DTO </param>
-             <param name="userId"> User Id </param>
-             <returns> Task object contaning request result </returns>
-             <response code="200"> Successful completion </response>
-             <response code="400"> Bad request </response>
-             <response code="401"> Unauthorized </response>
-        </member>
         <member name="M:PeopleSearchAPI.Controllers.UserController.ChangePassword(PeopleSearchAPI.Models.DTO.Requests.ChangePasswordDTORequest)">
             <summary>
              Change password
@@ -101,6 +90,29 @@
         </member>
         <member name="M:PeopleSearchAPI.Helpers.AuthorizeHandler.HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,Microsoft.AspNetCore.Authorization.Infrastructure.RolesAuthorizationRequirement)">
             <inheritdoc/>
+        </member>
+        <member name="T:PeopleSearchAPI.Helpers.CustomAuthenticateMiddleware">
+            <summary>
+            Middleware adding user in context items
+            </summary>
+        </member>
+        <member name="F:PeopleSearchAPI.Helpers.CustomAuthenticateMiddleware._next">
+            <summary>
+            Request delegate
+            </summary>
+        </member>
+        <member name="M:PeopleSearchAPI.Helpers.CustomAuthenticateMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Initializes a new instance of <see cref="T:PeopleSearchAPI.Helpers.CustomAuthenticateMiddleware"/>.
+            </summary>
+            <param name="next">The next item in the middleware pipeline.</param>
+        </member>
+        <member name="M:PeopleSearchAPI.Helpers.CustomAuthenticateMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext,PeopleSearch.Services.Interfaces.IUserService)">
+            <summary>
+            Invokes the middleware performing authentication.
+            </summary>
+            <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/>.</param>
+            <param name="userService">The <see cref="T:PeopleSearch.Services.Interfaces.IUserService"/>.</param>
         </member>
         <member name="T:PeopleSearchAPI.Helpers.CustomAuthorizeAttribute">
             <summary>
@@ -238,6 +250,26 @@
             Address data transfer object
             </summary>
         </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.UserQuestionnaireDTORequest.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.UserQuestionnaireDTORequest.Surname">
+            <summary>
+            Surname
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.UserQuestionnaireDTORequest.BirthDate">
+            <summary>
+            Birth date
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Requests.UserQuestionnaireDTORequest.Address">
+            <summary>
+            Address
+            </summary>
+        </member>
         <member name="T:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse">
             <summary>
             The data transfer object of the response containing the access token and refresh token
@@ -337,6 +369,51 @@
         <member name="P:PeopleSearchAPI.Models.DTO.Response.UserDTOResponse.Address">
             <summary>
             Address data transfer object
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireDTOResponse.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireDTOResponse.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireDTOResponse.Surname">
+            <summary>
+            Surname
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireDTOResponse.BirthDate">
+            <summary>
+            Birth date
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireDTOResponse.Address">
+            <summary>
+            Address
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireDTOResponse.UserId">
+            <summary>
+            User Id
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireDTOResponse.Likes">
+            <summary>
+            Gest or sets count of likes
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireDTOResponse.Dislikes">
+            <summary>
+            Gets or sets count of dislikes
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireDTOResponse.Views">
+            <summary>
+            Gets or sets views
             </summary>
         </member>
         <member name="T:IdentityAPI.Helpers.MappingProfile">

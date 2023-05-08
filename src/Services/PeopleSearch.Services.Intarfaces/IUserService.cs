@@ -1,6 +1,6 @@
 using PeopleSearch.Domain.Core.Enums;
 using PeopleSearch.Domain.Interfaces;
-using PeopleSearch.Services.Intarfaces.DTO;
+using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Interfaces.Exceptions;
 
 namespace PeopleSearch.Services.Interfaces;
@@ -63,15 +63,6 @@ public interface IUserService
     /// <param name="token"></param>
     /// <returns> true if token is active, false if token isn't active </returns>
     Task<bool> TokenIsActive(string token);
-
-    /// <summary>
-    /// Update of user date
-    /// </summary>
-    /// <param name="user"> User </param>
-    /// <param name="userId"> User Id </param>
-    /// <returns> Task object containing result of updating user data </returns>
-    /// <exception cref="NotFoundException"> User with this Id wasn't founded </exception>
-    Task<IBaseModel?> Update(UserModel user, Guid userId);
 
     /// <summary>
     /// Change password

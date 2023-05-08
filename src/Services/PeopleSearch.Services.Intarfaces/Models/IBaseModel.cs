@@ -1,4 +1,4 @@
-﻿namespace PeopleSearch.Services.Intarfaces.DTO;
+﻿namespace PeopleSearch.Services.Intarfaces.Models;
 
 /// <summary>
 /// Identity response interface

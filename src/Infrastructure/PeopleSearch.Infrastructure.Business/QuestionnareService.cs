@@ -1,6 +1,10 @@
-﻿using Infrastructure.Exceptions;
+﻿using AutoMapper;
+using Infrastructure.Exceptions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PeopleSearch.Domain.Core.Entities;
 using PeopleSearch.Domain.Interfaces;
+using PeopleSearch.Services.Intarfaces.Models;
+using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Interfaces;
 using PeopleSearch.Services.Interfaces.Exceptions;
 
@@ -10,24 +14,44 @@ public class QuestionnareService : IQuestionnaireService
 {
     private readonly IUnitOfWork _db;
 
+    /// <summary>
+    /// Object of class <see cref="IMapper"/> for models mapping
+    /// </summary>
+    private readonly IMapper _mapper;
+
     private bool _isDisposed;
 
     public QuestionnareService(IUnitOfWork db)
     {
         _db = db;
+
+        var config = new MapperConfiguration(cfg =>
+        {
+            cfg.CreateMap<UserQuestionnaire, UserQuestionnaireModel>();
+            cfg.CreateMap<UserQuestionnaireModel, UserQuestionnaire>();
+
+            cfg.CreateMap<AddressModel, Address>();
+            cfg.CreateMap<Address, AddressModel>();
+
+            cfg.CreateMap<UserModel, User>();
+            cfg.CreateMap<User, UserModel>();
+        });
+
+        _mapper = new Mapper(config);
     }
 
-    public List<UserQuestionnaire> GetAll()
+    public List<UserQuestionnaireModel> GetAll()
     {
-        return _db.Questionnaires.GetAll();
+        var res = _db.Questionnaires.GetAll();
+        return _mapper.Map<List<UserQuestionnaireModel>>(res);
     }
 
-    public List<UserQuestionnaire> GetRecommendations(Guid userId)
+    public List<UserQuestionnaireModel> GetRecommendations(Guid userId)
     {
         throw new NotImplementedException();
     }
 
-    public UserQuestionnaire GetById(Guid id)
+    public UserQuestionnaireModel GetById(Guid id)
     {
         var res = _db.Questionnaires.GetById(id);
 
@@ -36,37 +60,40 @@ public class QuestionnareService : IQuestionnaireService
             throw new NotFoundException("Questionnare with this Id wasn't founded", nameof(id));
         }
 
-        return res;
+        return _mapper.Map<UserQuestionnaireModel>(res);
     }
 
-    public async Task<UserQuestionnaire> Create(UserQuestionnaire userQuestionnaire)
+    public async Task<UserQuestionnaireModel> Create(UserQuestionnaireModel model)
     {
-        var questionnaire = _db.Questionnaires.GetById(userQuestionnaire.Id);
+        var questionnaire = _db.Questionnaires.GetById(model.Id);
 
         if (questionnaire != null)
         {
             throw new ObjectNotUniqueException("Questionnaire with this Id already exists", nameof(questionnaire));
         }
 
+        var userQuestionnaire = _mapper.Map<UserQuestionnaire>(model);
         await _db.Questionnaires.AddAsync(userQuestionnaire);
-        return userQuestionnaire;
+
+        return model;
     }
 
-    public async Task<UserQuestionnaire> Update(UserQuestionnaire userQuestionnaire)
+    public async Task<UserQuestionnaireModel> Update(UserQuestionnaireModel model)
     {
-        var questionnaire = _db.Questionnaires.GetById(userQuestionnaire.Id);
+        var questionnaire = _db.Questionnaires.GetById(model.Id);
 
         if (questionnaire == null)
         {
-            throw new NotFoundException("Questionnare with this Id wasn't founded", nameof(userQuestionnaire.Id));
+            throw new NotFoundException("Questionnare with this Id wasn't founded", nameof(model.Id));
         }
 
+        var userQuestionnaire = _mapper.Map<UserQuestionnaire>(model);
         await _db.Questionnaires.UpdateAsync(userQuestionnaire);
 
-        return userQuestionnaire;
+        return model;
     }
 
-    public async Task<UserQuestionnaire> ResetStatistics(Guid userId)
+    public async Task<UserQuestionnaireModel> ResetStatistics(Guid userId)
     {
         var questionnaire = _db.Questionnaires.GetById(userId);
 
@@ -81,7 +108,35 @@ public class QuestionnareService : IQuestionnaireService
 
         await _db.Questionnaires.UpdateAsync(questionnaire);
 
-        return questionnaire;
+        return _mapper.Map<UserQuestionnaireModel>(questionnaire);
+    }
+
+    public async Task Publish(Guid userId)
+    {
+        var questionnaire = _db.Questionnaires.GetById(userId);
+
+        if (questionnaire == null)
+        {
+            throw new NotFoundException("Questionnare with this Id wasn't founded", nameof(userId));
+        }
+
+        questionnaire.IsPublished = true;
+
+        await _db.Questionnaires.UpdateAsync(questionnaire);
+    }
+
+    public async Task RemoveFromPublication(Guid userId)
+    {
+        var questionnaire = _db.Questionnaires.GetById(userId);
+
+        if (questionnaire == null)
+        {
+            throw new NotFoundException("Questionnare with this Id wasn't founded", nameof(userId));
+        }
+
+        questionnaire.IsPublished = false;
+
+        await _db.Questionnaires.UpdateAsync(questionnaire);
     }
 
     protected virtual void Dispose(bool disposing)

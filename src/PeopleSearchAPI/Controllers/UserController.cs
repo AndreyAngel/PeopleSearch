@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PeopleSearch.Domain.Core.Entities;
 using PeopleSearch.Domain.Core.Enums;
-using PeopleSearch.Services.Intarfaces.DTO;
+using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Interfaces;
 using PeopleSearch.Services.Interfaces.Exceptions;
 using PeopleSearchAPI.Helpers;
@@ -167,42 +166,9 @@ public class UserController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Logout()
     {
-        var user = HttpContext.Items["User"] as User;
+        var user = HttpContext.Items["User"] as UserModel;
         await _userService.Logout(new Guid(user.Id));
         return NoContent();
-    }
-
-    ///<summary>
-    /// Update of user date
-    /// </summary>
-    /// <param name="model"> User data DTO </param>
-    /// <param name="userId"> User Id </param>
-    /// <returns> Task object contaning request result </returns>
-    /// <response code="200"> Successful completion </response>
-    /// <response code="400"> Bad request </response>
-    /// <response code="401"> Unauthorized </response>
-    [HttpPatch("{userId:Guid}")]
-    [CustomAuthorize(Policy = "Public")]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(IdentityErrorsModel), (int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> Update(UserDTORequest model, Guid userId)
-    {
-        try
-        {
-            var user = _mapper.Map<UserModel>(model);
-            var result = await _userService.Update(user, userId);
-
-            if (result.GetType() == typeof(IdentityErrorsModel))
-            {
-                return BadRequest(result);
-            }
-
-            return Ok(result);
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
     }
 
     ///<summary>

@@ -1,4 +1,6 @@
-﻿namespace PeopleSearch.Domain.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace PeopleSearch.Domain.Core.Entities;
 
 /// <summary>
 /// User questionnaire
@@ -8,6 +10,7 @@ public class UserQuestionnaire
     /// <summary>
     /// Get or set a Id
     /// </summary>
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public Guid Id { get; set; }
 
     /// <summary>
@@ -34,6 +37,10 @@ public class UserQuestionnaire
     /// Gets or sets a address
     /// </summary>
     public Address? Address { get; set; }
+
+    public Guid UserId { get; set; }
+
+    public User? User { get; set; }
 
     /// <summary>
     /// Gest or sets count of likes

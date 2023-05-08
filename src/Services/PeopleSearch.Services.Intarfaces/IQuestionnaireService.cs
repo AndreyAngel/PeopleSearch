@@ -1,18 +1,22 @@
-﻿using PeopleSearch.Domain.Core.Entities;
+﻿using PeopleSearch.Services.Intarfaces.Models;
 
 namespace PeopleSearch.Services.Interfaces;
 
 public interface IQuestionnaireService : IDisposable
 {
-    List<UserQuestionnaire> GetAll();
+    List<UserQuestionnaireModel> GetAll();
 
-    List<UserQuestionnaire> GetRecommendations(Guid userId);
+    List<UserQuestionnaireModel> GetRecommendations(Guid userId);
 
-    UserQuestionnaire GetById(Guid id);
+    UserQuestionnaireModel GetById(Guid id);
 
-    Task<UserQuestionnaire> Create(UserQuestionnaire userQuestionnaire);
+    Task<UserQuestionnaireModel> Create(UserQuestionnaireModel userQuestionnaire);
 
-    Task<UserQuestionnaire> Update(UserQuestionnaire userQuestionnaire);
+    Task<UserQuestionnaireModel> Update(UserQuestionnaireModel userQuestionnaire);
 
-    Task<UserQuestionnaire> ResetStatistics(Guid userId);
+    Task<UserQuestionnaireModel> ResetStatistics(Guid userId);
+
+    Task Publish(Guid userId);
+
+    Task RemoveFromPublication(Guid userId);
 }

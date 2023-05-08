@@ -63,6 +63,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton<IAuthorizationHandler, AuthorizeHandler>();
 builder.Services.AddScoped<ICustomUserStore, CustomUserStore>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IQuestionnaireService, QuestionnareService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddSwaggerGen(options =>
@@ -111,6 +113,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseMiddleware<CustomAuthenticateMiddleware>();
 
 app.MapControllers();
 

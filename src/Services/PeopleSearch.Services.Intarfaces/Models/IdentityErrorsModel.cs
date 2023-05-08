@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace PeopleSearch.Services.Intarfaces.DTO;
+namespace PeopleSearch.Services.Intarfaces.Models;
 
 /// <summary>
 /// The data transfer object of the response containing the identity errors

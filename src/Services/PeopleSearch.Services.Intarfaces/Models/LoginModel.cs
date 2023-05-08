@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PeopleSearch.Services.Intarfaces.DTO;
+namespace PeopleSearch.Services.Intarfaces.Models;
 
 /// <summary>
 /// Login data transfer object

@@ -94,15 +94,14 @@ public class CustomUserStore : UserStore<User>, ICustomUserStore, IDisposable
         cancellationToken.ThrowIfCancellationRequested();
         ThrowIfDisposed();
         var id = ConvertIdFromString(userId);
-        return await _context.Users.Include(x => x.UserQuestionnaire)
-                                   .SingleOrDefaultAsync(x => x.Id == userId, cancellationToken);
+        return await _context.Users.SingleOrDefaultAsync(x => x.Id == userId, cancellationToken);
     }
 
     /// <inheritdoc/>
     protected override async Task<User?> FindUserAsync(string userId, CancellationToken cancellationToken)
     {
         ThrowIfDisposed();
-        return await Users.Include(x => x.UserQuestionnaire).SingleOrDefaultAsync(u => u.Id.Equals(userId), cancellationToken);
+        return await Users.SingleOrDefaultAsync(u => u.Id.Equals(userId), cancellationToken);
     }
 
     public void Dispose()

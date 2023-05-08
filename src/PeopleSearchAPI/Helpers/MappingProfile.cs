@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
-using PeopleSearch.Services.Intarfaces.DTO;
+using PeopleSearch.Services.Intarfaces.Models;
+using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearchAPI.Models.DTO;
 using PeopleSearchAPI.Models.DTO.Requests;
 using PeopleSearchAPI.Models.DTO.Response;
+using PeopleSearchAPI.Models.DTO.Responses;
 
 namespace IdentityAPI.Helpers;
 
@@ -27,5 +29,9 @@ public class MappingProfile : Profile
         CreateMap<AddressModel, AddressDTO>();
 
         CreateMap<LoginDTORequest, LoginModel>();
+
+        CreateMap<UserQuestionnaireDTORequest, UserQuestionnaireModel>();
+
+        CreateMap<UserQuestionnaireModel, UserQuestionnaireDTOResponse>();
     }
 }

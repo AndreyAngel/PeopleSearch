@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using PeopleSearch.Domain.Core.Entities;
+using PeopleSearch.Services.Intarfaces.Models;
 
 namespace PeopleSearchAPI.Helpers;
 
@@ -14,7 +14,7 @@ public class LoginAttribute : Attribute, IAuthorizationFilter
     /// <inheritdoc/>
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        var user = (User?)context.HttpContext.Items["User"];
+        var user = (UserModel?)context.HttpContext.Items["User"];
 
         if (user != null)
         {

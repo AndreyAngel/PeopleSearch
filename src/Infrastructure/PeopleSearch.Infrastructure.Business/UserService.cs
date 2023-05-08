@@ -7,7 +7,7 @@ using PeopleSearch.Domain.Core.Entities;
 using PeopleSearch.Domain.Core.Enums;
 using PeopleSearch.Domain.Interfaces;
 using PeopleSearch.Infrastructure.Business.Helpers;
-using PeopleSearch.Services.Intarfaces.DTO;
+using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Interfaces;
 using PeopleSearch.Services.Interfaces.Exceptions;
 using System.IdentityModel.Tokens.Jwt;
@@ -203,36 +203,6 @@ public class UserService : UserManager<User>, IUserService
         ThrowIfDisposed();
 
         return (await Store.GetToken(token)).IsActive;
-    }
-
-    /// <inheritdoc/>
-    public async Task<IBaseModel?> Update(UserModel userAppDTO, Guid userId)
-    {
-        ThrowIfDisposed();
-
-        var user = _mapper.Map<User>(userAppDTO);
-        var res = await FindByIdAsync(userId.ToString());
-
-        if (res == null)
-        {
-            throw new NotFoundException("User with this Id wasn't founded", nameof(userId));
-        }
-
-        res.UserQuestionnaire.Name = user.UserQuestionnaire.Name ?? res.UserQuestionnaire.Name;
-        res.UserQuestionnaire.Surname = user.UserQuestionnaire.Surname ?? res.UserQuestionnaire.Surname;
-        res.UserQuestionnaire.BirthDate = user.UserQuestionnaire.BirthDate ?? res.UserQuestionnaire.BirthDate;
-        res.UserQuestionnaire.Address = user.UserQuestionnaire.Address ?? res.UserQuestionnaire.Address;
-
-        var result = await UpdateAsync(res);
-
-        if (!result.Succeeded)
-        {
-            return new IdentityErrorsModel(result.Errors);
-        }
-
-        var userDTO = _mapper.Map<UserModel>(res);
-
-        return userDTO;
     }
 
     /// <inheritdoc/>

@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using PeopleSearch.Domain.Core.Entities;
 using PeopleSearch.Domain.Interfaces;
+using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Interfaces;
 using PeopleSearch.Services.Interfaces.Exceptions;
 using PeopleSearchAPI.Models.DTO.Requests;
@@ -31,7 +30,7 @@ public class QuestionnareController : ControllerBase
     [HttpGet]
     public IActionResult GetRecommendations()
     {
-        var user = HttpContext.Items["User"] as User;
+        var user = HttpContext.Items["User"] as UserModel;
         var result = _questionnaireService.GetRecommendations(new Guid(user.Id));
         var response = _mapper.Map<UserQuestionnaireListDTOResponse>(result);
 
@@ -55,14 +54,15 @@ public class QuestionnareController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(UserQuestionnaireDTORequest model)
+    public async Task<IActionResult> Create(UserQuestionnaireDTORequest request)
     {
-        var questionare = _mapper.Map<UserQuestionnaire>(model);
+        var model = _mapper.Map<UserQuestionnaireModel>(request);
 
-        var user = HttpContext.Items["User"] as User;
-        questionare.Id = new Guid(user.Id);
-            
-        var result = await _questionnaireService.Create(questionare);
+        var user = HttpContext.Items["User"] as UserModel;
+        model.Id = new Guid(user.Id);
+        model.UserId = new Guid(user.Id);
+
+        var result = await _questionnaireService.Create(model);
         await _unitOfWork.SaveChangesAsync();
             
         var response = _mapper.Map<UserQuestionnaireDTOResponse>(result);
@@ -71,14 +71,14 @@ public class QuestionnareController : ControllerBase
     }
 
     [HttpPatch]
-    public async Task<IActionResult> Update(UserQuestionnaireDTORequest model)
+    public async Task<IActionResult> Update(UserQuestionnaireDTORequest request)
     {
-        var questionare = _mapper.Map<UserQuestionnaire>(model);
-            
-        var user = HttpContext.Items["User"] as User;
-        questionare.Id = new Guid(user.Id);
+        var model = _mapper.Map<UserQuestionnaireModel>(request);
 
-        var result = await _questionnaireService.Update(questionare);
+        var user = HttpContext.Items["User"] as UserModel;
+        model.Id = new Guid(user.Id);
+
+        var result = await _questionnaireService.Update(model);
         await _unitOfWork.SaveChangesAsync();
             
         var response = _mapper.Map<UserQuestionnaireDTOResponse>(result);
@@ -89,8 +89,8 @@ public class QuestionnareController : ControllerBase
     [HttpPatch]
     public async Task<IActionResult> ResetStatistics()
     {
-        var user = HttpContext.Items["User"] as User;
-        var result = _questionnaireService.ResetStatistics(new Guid(user.Id));
+        var user = HttpContext.Items["User"] as UserModel;
+        var result = await _questionnaireService.ResetStatistics(new Guid(user.Id));
         await _unitOfWork.SaveChangesAsync();
 
         var response = _mapper.Map<UserQuestionnaireDTOResponse>(result);
@@ -101,8 +101,9 @@ public class QuestionnareController : ControllerBase
     [HttpPatch]
     public async Task<IActionResult> Publish()
     {
-        var user = HttpContext.Items["User"] as User;
-        var result = _questionnaireService.ResetStatistics(new Guid(user.Id));
+        var user = HttpContext.Items["User"] as UserModel;
+        await _questionnaireService.Publish(new Guid(user.Id));
+        await _unitOfWork.SaveChangesAsync();
 
         return NoContent();
     }
@@ -110,8 +111,8 @@ public class QuestionnareController : ControllerBase
     [HttpPatch]
     public async Task<IActionResult> RemoveFromPublication()
     {
-        var user = HttpContext.Items["User"] as User;
-        var result = _questionnaireService.ResetStatistics(new Guid(user.Id));
+        var user = HttpContext.Items["User"] as UserModel;
+        await _questionnaireService.RemoveFromPublication(new Guid(user.Id));
         await _unitOfWork.SaveChangesAsync();
 
         return NoContent();
