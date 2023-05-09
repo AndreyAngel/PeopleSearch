@@ -38,8 +38,14 @@ public class UserQuestionnaire
     /// </summary>
     public Address? Address { get; set; }
 
+    /// <summary>
+    /// Gets or sets a user Id
+    /// </summary>
     public Guid UserId { get; set; }
 
+    /// <summary>
+    /// Gets or sets a <see cref="Entities.User"/>
+    /// </summary>
     public User? User { get; set; }
 
     /// <summary>

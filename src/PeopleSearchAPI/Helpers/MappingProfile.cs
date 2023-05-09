@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PeopleSearch.Domain.Core.Enums;
 using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearchAPI.Models.DTO;
@@ -33,5 +34,11 @@ public class MappingProfile : Profile
         CreateMap<UserQuestionnaireDTORequest, UserQuestionnaireModel>();
 
         CreateMap<UserQuestionnaireModel, UserQuestionnaireDTOResponse>();
+
+        CreateMap<GradeDTORequest, GradeModel>();
+
+        CreateMap<GradeEnumDTO, GradeEnum>();
+
+        CreateMap<GradeEnum, GradeEnumDTO>();
     }
 }

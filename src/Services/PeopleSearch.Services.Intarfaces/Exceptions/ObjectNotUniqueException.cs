@@ -21,5 +21,5 @@ public class ObjectNotUniqueException: ArgumentException
     /// </summary>
     /// <param name="message"> Message </param>
     /// <param name="paramName"> Param name </param>
-    public ObjectNotUniqueException(string message, string paramName) : base(message, paramName) { }
+    public ObjectNotUniqueException(string message, string? paramName) : base(message, paramName) { }
 }

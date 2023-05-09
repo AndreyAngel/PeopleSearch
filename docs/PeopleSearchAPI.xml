@@ -416,6 +416,31 @@
             Gets or sets views
             </summary>
         </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireListDTOResponse.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireListDTOResponse.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireListDTOResponse.Surname">
+            <summary>
+            Surname
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireListDTOResponse.BirthDate">
+            <summary>
+            Birth date
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireListDTOResponse.Address">
+            <summary>
+            Address
+            </summary>
+        </member>
         <member name="T:IdentityAPI.Helpers.MappingProfile">
             <summary>
             Class for models mapping

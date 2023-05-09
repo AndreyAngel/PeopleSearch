@@ -1,4 +1,5 @@
-﻿using PeopleSearch.Services.Intarfaces.Models;
+﻿using PeopleSearch.Domain.Core.Enums;
+using PeopleSearch.Services.Intarfaces.Models;
 
 namespace PeopleSearch.Services.Interfaces;
 
@@ -8,9 +9,11 @@ public interface IQuestionnaireService : IDisposable
 
     List<UserQuestionnaireModel> GetRecommendations(Guid userId);
 
-    UserQuestionnaireModel GetById(Guid id);
+    UserQuestionnaireModel GetById(Guid id, Guid viewerId);
 
     Task<UserQuestionnaireModel> Create(UserQuestionnaireModel userQuestionnaire);
+
+    Task PutAGrade(GradeModel model);
 
     Task<UserQuestionnaireModel> Update(UserQuestionnaireModel userQuestionnaire);
 

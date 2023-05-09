@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Infrastructure.Exceptions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PeopleSearch.Domain.Core.Entities;
+using PeopleSearch.Domain.Core.Enums;
 using PeopleSearch.Domain.Interfaces;
-using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Interfaces;
 using PeopleSearch.Services.Interfaces.Exceptions;
@@ -35,6 +34,9 @@ public class QuestionnareService : IQuestionnaireService
 
             cfg.CreateMap<UserModel, User>();
             cfg.CreateMap<User, UserModel>();
+
+            cfg.CreateMap<GradeModel, Grade>();
+            cfg.CreateMap<Grade, GradeModel>();
         });
 
         _mapper = new Mapper(config);
@@ -42,17 +44,21 @@ public class QuestionnareService : IQuestionnaireService
 
     public List<UserQuestionnaireModel> GetAll()
     {
+        ThrowIfDisposed();
         var res = _db.Questionnaires.GetAll();
         return _mapper.Map<List<UserQuestionnaireModel>>(res);
     }
 
     public List<UserQuestionnaireModel> GetRecommendations(Guid userId)
     {
+        ThrowIfDisposed();
         throw new NotImplementedException();
     }
 
-    public UserQuestionnaireModel GetById(Guid id)
+    public UserQuestionnaireModel GetById(Guid id, Guid viewerId)
     {
+        ThrowIfDisposed();
+
         var res = _db.Questionnaires.GetById(id);
 
         if (res == null)
@@ -60,16 +66,20 @@ public class QuestionnareService : IQuestionnaireService
             throw new NotFoundException("Questionnare with this Id wasn't founded", nameof(id));
         }
 
+        // TODO: реализовать счётчик просмотров
+
         return _mapper.Map<UserQuestionnaireModel>(res);
     }
 
     public async Task<UserQuestionnaireModel> Create(UserQuestionnaireModel model)
     {
+        ThrowIfDisposed();
+
         var questionnaire = _db.Questionnaires.GetById(model.Id);
 
         if (questionnaire != null)
         {
-            throw new ObjectNotUniqueException("Questionnaire with this Id already exists", nameof(questionnaire));
+            throw new ObjectNotUniqueException("This user already has a questionnaire", nameof(questionnaire));
         }
 
         var userQuestionnaire = _mapper.Map<UserQuestionnaire>(model);
@@ -78,8 +88,40 @@ public class QuestionnareService : IQuestionnaireService
         return model;
     }
 
+    public async Task PutAGrade(GradeModel model)
+    {
+        var res = _db.Grades.GetAll().SingleOrDefault(x => x.UserId == model.UserId &&
+                                                             x.QuestionnaireId == model.QuestionnaireId);
+
+        if (res != null)
+        {
+            throw new ObjectNotUniqueException("The user has already rated this questionnaire", null);
+        }
+
+        var questionnaire = _db.Questionnaires.GetById(model.QuestionnaireId);
+
+        if (questionnaire == null)
+        {
+            throw new NotFoundException("The questionnaire with this Id wasn't founded", nameof(model.QuestionnaireId));
+        }
+
+        var grade = _mapper.Map<Grade>(model);
+        await _db.Grades.AddAsync(grade);
+        
+        if (model.GradeValue == GradeEnum.Like)
+        {
+            questionnaire.Likes += 1;
+        }
+        else
+        {
+            questionnaire.Dislikes += 1;
+        }
+    }
+
     public async Task<UserQuestionnaireModel> Update(UserQuestionnaireModel model)
     {
+        ThrowIfDisposed();
+
         var questionnaire = _db.Questionnaires.GetById(model.Id);
 
         if (questionnaire == null)
@@ -95,6 +137,8 @@ public class QuestionnareService : IQuestionnaireService
 
     public async Task<UserQuestionnaireModel> ResetStatistics(Guid userId)
     {
+        ThrowIfDisposed();
+
         var questionnaire = _db.Questionnaires.GetById(userId);
 
         if (questionnaire == null)
@@ -113,6 +157,8 @@ public class QuestionnareService : IQuestionnaireService
 
     public async Task Publish(Guid userId)
     {
+        ThrowIfDisposed();
+
         var questionnaire = _db.Questionnaires.GetById(userId);
 
         if (questionnaire == null)
@@ -127,6 +173,8 @@ public class QuestionnareService : IQuestionnaireService
 
     public async Task RemoveFromPublication(Guid userId)
     {
+        ThrowIfDisposed();
+
         var questionnaire = _db.Questionnaires.GetById(userId);
 
         if (questionnaire == null)
@@ -139,32 +187,35 @@ public class QuestionnareService : IQuestionnaireService
         await _db.Questionnaires.UpdateAsync(questionnaire);
     }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_isDisposed)
-        {
-            if (disposing)
-            {
-                // TODO: освободить управляемое состояние (управляемые объекты)
-            }
-
-            // TODO: освободить неуправляемые ресурсы (неуправляемые объекты) и переопределить метод завершения
-            // TODO: установить значение NULL для больших полей
-            _isDisposed = true;
-        }
-    }
-
-    // // TODO: переопределить метод завершения, только если "Dispose(bool disposing)" содержит код для освобождения неуправляемых ресурсов
-    // ~QuestionnareService()
-    // {
-    //     // Не изменяйте этот код. Разместите код очистки в методе "Dispose(bool disposing)".
-    //     Dispose(disposing: false);
-    // }
-
     public void Dispose()
     {
         // Не изменяйте этот код. Разместите код очистки в методе "Dispose(bool disposing)".
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
+    }
+
+    /// <inheritdoc/>
+    protected void Dispose(bool disposing)
+    {
+        if (!_isDisposed)
+        {
+            if (disposing)
+            {
+                _db.Dispose();
+            }
+
+            _isDisposed = true;
+        }
+    }
+
+    /// <summary>
+    /// Throws if this class has been disposed.
+    /// </summary>
+    protected void ThrowIfDisposed()
+    {
+        if (_isDisposed)
+        {
+            throw new ObjectDisposedException(GetType().Name);
+        }
     }
 }
