@@ -1,7 +1,4 @@
-﻿using PeopleSearch.Domain.Core.Entities;
-using PeopleSearch.Services.Intarfaces.Models;
-
-namespace PeopleSearch.Services.Intarfaces.Models;
+﻿namespace PeopleSearch.Services.Intarfaces.Models;
 
 public class UserQuestionnaireModel
 {
@@ -34,6 +31,8 @@ public class UserQuestionnaireModel
     /// Gets or sets a address
     /// </summary>
     public AddressModel? Address { get; set; }
+
+    public List<InterestModel> Interests { get; set; }
 
     public Guid UserId { get; set; }
 

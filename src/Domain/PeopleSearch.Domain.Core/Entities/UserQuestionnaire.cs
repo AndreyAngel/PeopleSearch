@@ -5,13 +5,15 @@ namespace PeopleSearch.Domain.Core.Entities;
 /// <summary>
 /// User questionnaire
 /// </summary>
-public class UserQuestionnaire
+public class UserQuestionnaire : BaseEntity
 {
     /// <summary>
     /// Get or set a Id
     /// </summary>
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public Guid Id { get; set; }
+
+    // TODO: добавить фото профиля
 
     /// <summary>
     /// Gets or sets a name
@@ -37,6 +39,8 @@ public class UserQuestionnaire
     /// Gets or sets a address
     /// </summary>
     public Address? Address { get; set; }
+
+    public List<Interest> Interests { get; set; } = new();
 
     /// <summary>
     /// Gets or sets a user Id

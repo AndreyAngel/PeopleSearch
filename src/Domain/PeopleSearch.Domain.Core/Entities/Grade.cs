@@ -5,13 +5,8 @@ namespace PeopleSearch.Domain.Core.Entities;
 /// <summary>
 /// Grade
 /// </summary>
-public class Grade
+public class Grade : BaseEntity
 {
-    /// <summary>
-    /// Gets or sets Id
-    /// </summary>
-    public Guid Id { get; set; }
-
     /// <summary>
     /// Gets or seys user Id
     /// </summary>

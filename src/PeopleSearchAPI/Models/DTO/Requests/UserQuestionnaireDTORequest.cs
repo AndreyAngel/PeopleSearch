@@ -21,4 +21,9 @@ public class UserQuestionnaireDTORequest
     /// Address
     /// </summary>
     public AddressDTO? Address { get; set; }
+    
+    /// <summary>
+    /// Interests list
+    /// </summary>
+    public List<InterestDTO>? Interests { get; set; }
 }

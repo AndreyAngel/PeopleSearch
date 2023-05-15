@@ -1,5 +1,4 @@
-﻿using PeopleSearch.Domain.Core.Enums;
-using PeopleSearch.Services.Intarfaces.Models;
+﻿using PeopleSearch.Services.Intarfaces.Models;
 
 namespace PeopleSearch.Services.Interfaces;
 

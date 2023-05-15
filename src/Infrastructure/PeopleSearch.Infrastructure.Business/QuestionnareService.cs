@@ -23,23 +23,7 @@ public class QuestionnareService : IQuestionnaireService
     public QuestionnareService(IUnitOfWork db)
     {
         _db = db;
-
-        var config = new MapperConfiguration(cfg =>
-        {
-            cfg.CreateMap<UserQuestionnaire, UserQuestionnaireModel>();
-            cfg.CreateMap<UserQuestionnaireModel, UserQuestionnaire>();
-
-            cfg.CreateMap<AddressModel, Address>();
-            cfg.CreateMap<Address, AddressModel>();
-
-            cfg.CreateMap<UserModel, User>();
-            cfg.CreateMap<User, UserModel>();
-
-            cfg.CreateMap<GradeModel, Grade>();
-            cfg.CreateMap<Grade, GradeModel>();
-        });
-
-        _mapper = new Mapper(config);
+        _mapper = new Mapper(CreateMapperConfiguration());
     }
 
     public List<UserQuestionnaireModel> GetAll()
@@ -53,6 +37,7 @@ public class QuestionnareService : IQuestionnaireService
     {
         ThrowIfDisposed();
         throw new NotImplementedException();
+        // TODO: интегрировать рекомендательную систему
     }
 
     public UserQuestionnaireModel GetById(Guid id, Guid viewerId)
@@ -189,7 +174,6 @@ public class QuestionnareService : IQuestionnaireService
 
     public void Dispose()
     {
-        // Не изменяйте этот код. Разместите код очистки в методе "Dispose(bool disposing)".
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
@@ -217,5 +201,30 @@ public class QuestionnareService : IQuestionnaireService
         {
             throw new ObjectDisposedException(GetType().Name);
         }
+    }
+
+    /// <summary>
+    /// Create mapper configuration
+    /// </summary>
+    /// <returns><see cref="MapperConfiguration"/></returns>
+    private static MapperConfiguration CreateMapperConfiguration()
+    {
+        return new MapperConfiguration(cfg =>
+        {
+            cfg.CreateMap<UserQuestionnaire, UserQuestionnaireModel>();
+            cfg.CreateMap<UserQuestionnaireModel, UserQuestionnaire>();
+
+            cfg.CreateMap<AddressModel, Address>();
+            cfg.CreateMap<Address, AddressModel>();
+
+            cfg.CreateMap<UserModel, User>();
+            cfg.CreateMap<User, UserModel>();
+
+            cfg.CreateMap<GradeModel, Grade>();
+            cfg.CreateMap<Grade, GradeModel>();
+
+            cfg.CreateMap<InterestModel, Interest>();
+            cfg.CreateMap<Interest, InterestModel>();
+        });
     }
 }

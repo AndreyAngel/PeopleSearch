@@ -19,24 +19,4 @@ public class UserDTOResponse : IDTOResponse
     /// Phone number
     /// </summary>
     public string? PhoneNumber { get; set; }
-
-    /// <summary>
-    /// Name
-    /// </summary>
-    public string? Name { get; set; }
-
-    /// <summary>
-    /// Surname
-    /// </summary>
-    public string? Surname { get; set; }
-
-    /// <summary>
-    /// BirthDate
-    /// </summary>
-    public DateTime? BirthDate { get; set; }
-
-    /// <summary>
-    /// Address data transfer object
-    /// </summary>
-    public AddressDTO? Address { get; set; }
 }

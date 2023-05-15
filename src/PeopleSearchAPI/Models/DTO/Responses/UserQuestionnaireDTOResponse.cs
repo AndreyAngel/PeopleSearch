@@ -27,6 +27,8 @@ public class UserQuestionnaireDTOResponse
     /// </summary>
     public AddressDTO? Address { get; set; }
 
+    public List<InterestDTO> Interests { get; set; } = new();
+
     /// <summary>
     /// User Id
     /// </summary>
