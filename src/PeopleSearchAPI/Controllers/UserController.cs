@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PeopleSearch.Domain.Core.Enums;
+using PeopleSearch.Domain.Interfaces;
 using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Interfaces;
 using PeopleSearch.Services.Interfaces.Exceptions;
@@ -24,6 +25,10 @@ public class UserController : ControllerBase
     /// </summary>
     private readonly IUserService _userService;
 
+    private readonly IQuestionnaireService _questionnaireService;
+
+    private readonly IUnitOfWork _unitOfWork;
+
     /// <summary>
     /// Object of class <see cref="IMapper"/> for models mapping
     /// </summary>
@@ -34,9 +39,14 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="userService"> Object of class providing the APIs for managing user in a persistence store. </param>
     /// <param name="mapper"> Object of class <see cref="IMapper"/> for models mapping </param>
-    public UserController(IUserService userService, IMapper mapper)
+    public UserController(IUserService userService,
+                          IQuestionnaireService questionnaireService,
+                          IUnitOfWork unitOfWork,
+                          IMapper mapper)
     {
         _userService = userService;
+        _questionnaireService = questionnaireService;
+        _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
@@ -49,7 +59,7 @@ public class UserController : ControllerBase
     /// <response code="404"> User with this Id wasn't founded </response>
     /// <response code="401"> Unauthorized </response>
     [HttpGet("{userId:Guid}")]
-    [CustomAuthorize(Policy = "Public")]
+    [CustomAuthorize]
     [ProducesResponseType(typeof(UserDTOResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetById(Guid userId)
@@ -110,6 +120,11 @@ public class UserController : ControllerBase
     {
         var user = _mapper.Map<UserModel>(model);
         var result = await _userService.Register(user, model.Password, Role.User);
+        await _questionnaireService.Create(new UserQuestionnaireModel()
+        {
+            Id = new Guid(user.Id),
+            UserId = new Guid(user.Id)
+        });
 
         if (result.GetType() == typeof(IdentityErrorsModel))
         {
@@ -118,6 +133,7 @@ public class UserController : ControllerBase
 
         //TODO: Решить задачу сохранения всех изменеий после завершения всех процессов
         //await _userService.Store.Context.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         return Created(new Uri($"https://localhost:44389/api/v1/IdentityAPI/User/GetById/{user.Id}"), result);
     }
@@ -162,7 +178,7 @@ public class UserController : ControllerBase
     /// <response code="204"> Successful completion </response>
     /// <response code="401"> Unauthorized </response>
     [HttpPost]
-    [CustomAuthorize(Policy = "Public")]
+    [CustomAuthorize]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Logout()
     {
@@ -180,7 +196,7 @@ public class UserController : ControllerBase
     /// <response code="400"> Bad request </response>
     /// <response code="401"> Unauthorized </response>
     [HttpPatch]
-    [CustomAuthorize(Policy = "Public")]
+    [CustomAuthorize]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType(typeof(IdentityErrorsModel), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> ChangePassword(ChangePasswordDTORequest model)

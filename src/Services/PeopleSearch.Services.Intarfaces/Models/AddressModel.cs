@@ -1,17 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PeopleSearch.Services.Intarfaces.Models;
+﻿namespace PeopleSearch.Services.Intarfaces.Models;
 
 /// <summary>
 /// Address data transfer object
 /// </summary>
 public class AddressModel
 {
+    public required string Region { get; set; }
+
     /// <summary>
     /// City
     /// </summary>
-    [Required]
-    public string? City { get; set; }
+    public required string City { get; set; }
 
     /// <summary>
     /// Street

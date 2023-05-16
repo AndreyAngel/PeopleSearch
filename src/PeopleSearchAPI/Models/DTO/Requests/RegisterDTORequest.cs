@@ -15,11 +15,6 @@ public class RegisterDTORequest
     public string? Email { get; set; }
 
     /// <summary>
-    /// BirthDate
-    /// </summary>
-    public DateTime? BirthDate { get; set; }
-
-    /// <summary>
     /// Password
     /// </summary>
     [Required(ErrorMessage = "Password is required")]

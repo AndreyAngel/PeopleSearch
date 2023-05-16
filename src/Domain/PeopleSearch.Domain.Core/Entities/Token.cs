@@ -5,8 +5,13 @@ namespace PeopleSearch.Domain.Core.Entities;
 /// <summary>
 /// Entity storing token information
 /// </summary>
-public class Token : BaseEntity
+public class Token
 {
+    /// <summary>
+    /// Gets or sets Id
+    /// </summary>
+    public Guid Id { get; set; }
+
     /// <summary>
     /// Gets or set a Id of user using this token
     /// </summary>

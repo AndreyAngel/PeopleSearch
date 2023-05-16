@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using PeopleSearch.Domain.Core.Enums;
 using PeopleSearch.Domain.Interfaces;
 using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Interfaces;
 using PeopleSearch.Services.Interfaces.Exceptions;
+using PeopleSearchAPI.Helpers;
 using PeopleSearchAPI.Models.DTO.Requests;
 using PeopleSearchAPI.Models.DTO.Responses;
 
@@ -13,7 +13,8 @@ namespace PeopleSearchAPI.Controllers;
 
 [Route("api/v1/[controller]/[action]")]
 [ApiController]
-public class QuestionnareController : ControllerBase
+[CustomAuthorize]
+public class QuestionnaireController : ControllerBase
 {
     private readonly IQuestionnaireService _questionnaireService;
 
@@ -21,7 +22,7 @@ public class QuestionnareController : ControllerBase
 
     private readonly IMapper _mapper;
 
-    public QuestionnareController(IQuestionnaireService questionnaireService,
+    public QuestionnaireController(IQuestionnaireService questionnaireService,
                                     IUnitOfWork unitOfWork, IMapper mapper)
     {
         _mapper = mapper;
@@ -34,7 +35,7 @@ public class QuestionnareController : ControllerBase
     {
         var user = HttpContext.Items["User"] as UserModel;
         var result = _questionnaireService.GetRecommendations(new Guid(user.Id));
-        var response = _mapper.Map<UserQuestionnaireListDTOResponse>(result);
+        var response = _mapper.Map<List<UserQuestionnaireListDTOResponse>>(result);
 
         return Ok(response);
     }
@@ -56,16 +57,18 @@ public class QuestionnareController : ControllerBase
         }
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create(UserQuestionnaireDTORequest request)
+    [HttpPatch]
+    public async Task<IActionResult> FillOutAForm(UserQuestionnaireDTORequest request)
     {
-        var model = _mapper.Map<UserQuestionnaireModel>(request);
+        var model = _mapper.Map<UserQuestionnaireUpdateModel>(request);
 
         var user = HttpContext.Items["User"] as UserModel;
         model.Id = new Guid(user.Id);
-        model.UserId = new Guid(user.Id);
 
-        var result = await _questionnaireService.Create(model);
+        var result = await _questionnaireService.Update(model);
+        await _questionnaireService.Publish(new Guid(user.Id));
+        result.IsPublished = true;
+
         await _unitOfWork.SaveChangesAsync();
             
         var response = _mapper.Map<UserQuestionnaireDTOResponse>(result);
@@ -73,7 +76,7 @@ public class QuestionnareController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost]
+    [HttpPatch]
     public async Task<IActionResult> PutAGrade(GradeDTORequest request)
     {
         try
@@ -101,7 +104,7 @@ public class QuestionnareController : ControllerBase
     [HttpPatch]
     public async Task<IActionResult> Update(UserQuestionnaireDTORequest request)
     {
-        var model = _mapper.Map<UserQuestionnaireModel>(request);
+        var model = _mapper.Map<UserQuestionnaireUpdateModel>(request);
 
         var user = HttpContext.Items["User"] as UserModel;
         model.Id = new Guid(user.Id);

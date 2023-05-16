@@ -10,11 +10,11 @@ public interface IQuestionnaireService : IDisposable
 
     UserQuestionnaireModel GetById(Guid id, Guid viewerId);
 
-    Task<UserQuestionnaireModel> Create(UserQuestionnaireModel userQuestionnaire);
+    Task Create(UserQuestionnaireModel userQuestionnaire);
 
     Task PutAGrade(GradeModel model);
 
-    Task<UserQuestionnaireModel> Update(UserQuestionnaireModel userQuestionnaire);
+    Task<UserQuestionnaireModel> Update(UserQuestionnaireUpdateModel userQuestionnaire);
 
     Task<UserQuestionnaireModel> ResetStatistics(Guid userId);
 

@@ -19,7 +19,7 @@
             Object of class <see cref="T:AutoMapper.IMapper"/> for models mapping
             </summary>
         </member>
-        <member name="M:PeopleSearchAPI.Controllers.UserController.#ctor(PeopleSearch.Services.Interfaces.IUserService,AutoMapper.IMapper)">
+        <member name="M:PeopleSearchAPI.Controllers.UserController.#ctor(PeopleSearch.Services.Interfaces.IUserService,PeopleSearch.Services.Interfaces.IQuestionnaireService,PeopleSearch.Domain.Interfaces.IUnitOfWork,AutoMapper.IMapper)">
             <summary>
             Creates an instance of the <see cref="T:PeopleSearchAPI.Controllers.UserController"/>.
             </summary>
@@ -208,11 +208,6 @@
         <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest.Email">
             <summary>
             Email
-            </summary>
-        </member>
-        <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest.BirthDate">
-            <summary>
-            BirthDate
             </summary>
         </member>
         <member name="P:PeopleSearchAPI.Models.DTO.Requests.RegisterDTORequest.Password">

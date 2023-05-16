@@ -53,5 +53,5 @@ public class UserQuestionnaireModel
     /// </summary>
     public int Views { get; set; } = 0;
 
-    public bool IsPublished { get; set; } = true;
+    public bool IsPublished { get; set; } = false;
 }

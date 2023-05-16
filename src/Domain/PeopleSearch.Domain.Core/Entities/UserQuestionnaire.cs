@@ -5,7 +5,7 @@ namespace PeopleSearch.Domain.Core.Entities;
 /// <summary>
 /// User questionnaire
 /// </summary>
-public class UserQuestionnaire : BaseEntity
+public class UserQuestionnaire
 {
     /// <summary>
     /// Get or set a Id
@@ -67,5 +67,5 @@ public class UserQuestionnaire : BaseEntity
     /// </summary>
     public int Views { get; set; } = 0;
 
-    public bool IsPublished { get; set; } = true;
+    public bool IsPublished { get; set; } = false;
 }

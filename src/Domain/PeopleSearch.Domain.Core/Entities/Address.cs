@@ -3,8 +3,13 @@
 /// <summary>
 /// Entity storing address data
 /// </summary>
-public class Address : BaseEntity
+public class Address
 {
+    /// <summary>
+    /// Gets or sets Id
+    /// </summary>
+    public Guid Id { get; set; }
+
     /// <summary>
     /// Gests or sets a region
     /// </summary>

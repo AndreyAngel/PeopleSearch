@@ -116,9 +116,47 @@ public static class SVD
         // the set of elements equal to 0. The number of elements appended
         // is equal to the actual number of rows in the matrix of ratings
         _itemBaselinePredictors.AddRange(Enumerable.Repeat(0.00, _ratingMatrix[0].Count));
+
+        Learn();
     }
 
-    public static void Learn()
+    public static List<Prediction> Predict()
+    {
+        List<Prediction> predictions = new();
+
+        // Computing the average rating for the entire domain of rated items
+        double AvgRating = GetAverageRating(_ratingMatrix);
+
+        // Iterating through the MatrixUI matrix of ratings
+        for (int User = 0; User < _ratingMatrix.Count; User++)
+            for (int Item = 0; Item < _ratingMatrix[0].Count; Item++)
+
+                // For each rating given to the current item by the current user 
+                // we're performing a check if the current item is unknown
+                if (_ratingMatrix[User][Item] == 0)
+                {
+                    // If so, compute the rating for the current 
+                    // unrated item used baseline estimate formula (2)
+                    _ratingMatrix[User][Item] = AvgRating + _userBaselinePredictors[User] +
+                        _itemBaselinePredictors[Item] + GetProduct(_userFactorsMatrix[User], _itemFactorsMatrix[Item]);
+
+                    // Output the original rating estimated for the current item 
+                    // and the rounded value of the following rating
+
+                    predictions.Add(new Prediction()
+                    {
+                        UserNumber = User,
+                        ItemNumber = Item,
+                        PredictedGrade = _ratingMatrix[User][Item],
+                        Grade = (int)Math.Round(_ratingMatrix[User][Item])
+                    });
+                }
+
+        return predictions;
+    }
+
+
+    private static void Learn()
     {
         // Initializing the iterations loop counter variable
         int Iterations = 0;
@@ -162,9 +200,6 @@ public static class SVD
                         // between the existing and estimated ratings
                         double Error = _ratingMatrix[User][Item] - Rating;
 
-                        // Output the current rating given by the current user to the current item
-                        Console.Write("{0:0.00}|{1:0.00} ", _ratingMatrix[User][Item], Rating);
-
                         // Add the value of error square to the current value of RMSE
                         RMSE_New += Math.Pow(Error, 2);
 
@@ -199,17 +234,10 @@ public static class SVD
                                                                 L2 * _itemFactorsMatrix[Item][Factor]);
                         }
                     }
-
-                    // Output the value of unknown rating in the matrix of ratings
-                    else Console.Write("{0:0.00}|0.00 ", _ratingMatrix[User][Item]);
-
-                Console.WriteLine("\n");
             }
 
             // Compute the current value of RMSE (root means square error)
             RMSE_New = Math.Sqrt(RMSE_New / (_ratingMatrix.Count * _ratingMatrix[0].Count));
-
-            Console.WriteLine("Iteration: {0}\t RMSE={1}\n\n", Iterations, RMSE_New);
 
             // Performing a check if the difference between the values 
             // of current and previous values of RMSE exceeds the given threshold
@@ -222,34 +250,6 @@ public static class SVD
 
             Iterations++; // Increment the iterations loop counter variable
         }
-    }
-
-    public static void Predict()
-    {
-        // Computing the average rating for the entire domain of rated items
-        double AvgRating = GetAverageRating(_ratingMatrix);
-        Console.WriteLine("We've predicted the following ratings:\n");
-
-        // Iterating through the MatrixUI matrix of ratings
-        for (int User = 0; User < _ratingMatrix.Count; User++)
-            for (int Item = 0; Item < _ratingMatrix[0].Count; Item++)
-
-                // For each rating given to the current item by the current user 
-                // we're performing a check if the current item is unknown
-                if (_ratingMatrix[User][Item] == 0)
-                {
-                    // If so, compute the rating for the current 
-                    // unrated item used baseline estimate formula (2)
-                    _ratingMatrix[User][Item] = AvgRating + _userBaselinePredictors[User] +
-                        _itemBaselinePredictors[Item] + GetProduct(_userFactorsMatrix[User], _itemFactorsMatrix[Item]);
-
-                    // Output the original rating estimated for the current item 
-                    // and the rounded value of the following rating
-                    Console.WriteLine("User {0} has rated Item {1} as {2:0.00}|{3:0.00}", User,
-                                Item, _ratingMatrix[User][Item], Math.Round(_ratingMatrix[User][Item]));
-                }
-
-        Console.WriteLine();
     }
 
     private static double GetProduct(List<double> userFactorizationVector, List<double> itemFactorizationVector)

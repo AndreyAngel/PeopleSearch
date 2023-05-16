@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\PeopleSearch.Domain.Interfaces\PeopleSearch.Domain.Interfaces.csproj" />
     <ProjectReference Include="..\..\Services\PeopleSearch.Services.Intarfaces\PeopleSearch.Services.Intarfaces.csproj" />
+    <ProjectReference Include="..\PeopleSearch.Infrastructure.RecommenderSystem\PeopleSearch.Infrastructure.RecommenderSystem.csproj" />
   </ItemGroup>
 
 </Project>

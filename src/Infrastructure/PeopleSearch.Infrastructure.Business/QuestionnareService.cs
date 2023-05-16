@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration.Annotations;
 using Infrastructure.Exceptions;
 using PeopleSearch.Domain.Core.Entities;
 using PeopleSearch.Domain.Core.Enums;
 using PeopleSearch.Domain.Interfaces;
+using PeopleSearch.Infrastructure.RecommenderSystem;
 using PeopleSearch.Services.Intarfaces.Models;
 using PeopleSearch.Services.Interfaces;
 using PeopleSearch.Services.Interfaces.Exceptions;
@@ -20,6 +22,10 @@ public class QuestionnareService : IQuestionnaireService
 
     private bool _isDisposed;
 
+    private readonly Dictionary<Guid, int> _userNumbers = new();
+
+    private readonly Dictionary<int, Guid> _questionnaireNumbers = new();
+
     public QuestionnareService(IUnitOfWork db)
     {
         _db = db;
@@ -36,8 +42,30 @@ public class QuestionnareService : IQuestionnaireService
     public List<UserQuestionnaireModel> GetRecommendations(Guid userId)
     {
         ThrowIfDisposed();
-        throw new NotImplementedException();
-        // TODO: интегрировать рекомендательную систему
+
+        var recommendatedQuestionnaires = new List<UserQuestionnaireModel>();
+        var matrixAllGrades = GetMatrixAllGrades();
+
+        if (matrixAllGrades.Count != 0)
+        {
+            SVD.Initialize(matrixAllGrades, 3);
+            var predictions = SVD.Predict().Where(x => x.UserNumber == _userNumbers[userId]).ToList();
+            predictions.OrderBy(x => x.PredictedGrade);
+
+            if (predictions.Count == 0)
+            {
+                var entities = _db.Questionnaires.Include(x => x.Address, x => x.Interests);
+                recommendatedQuestionnaires = _mapper.Map<List<UserQuestionnaireModel>>(entities);
+            }
+
+            for (int i = 0; i < predictions.Last().UserNumber; i++)
+            {
+                var questionnaire = _db.Questionnaires.Include(x => x.Address, x => x.Interests)
+                                    .SingleOrDefault(x => x.Id == _questionnaireNumbers[predictions[i].ItemNumber]);
+            }
+        }
+
+        return recommendatedQuestionnaires;
     }
 
     public UserQuestionnaireModel GetById(Guid id, Guid viewerId)
@@ -56,7 +84,7 @@ public class QuestionnareService : IQuestionnaireService
         return _mapper.Map<UserQuestionnaireModel>(res);
     }
 
-    public async Task<UserQuestionnaireModel> Create(UserQuestionnaireModel model)
+    public async Task Create(UserQuestionnaireModel model)
     {
         ThrowIfDisposed();
 
@@ -69,8 +97,6 @@ public class QuestionnareService : IQuestionnaireService
 
         var userQuestionnaire = _mapper.Map<UserQuestionnaire>(model);
         await _db.Questionnaires.AddAsync(userQuestionnaire);
-
-        return model;
     }
 
     public async Task PutAGrade(GradeModel model)
@@ -92,7 +118,7 @@ public class QuestionnareService : IQuestionnaireService
 
         var grade = _mapper.Map<Grade>(model);
         await _db.Grades.AddAsync(grade);
-        
+
         if (model.GradeValue == GradeEnum.Like)
         {
             questionnaire.Likes += 1;
@@ -103,7 +129,7 @@ public class QuestionnareService : IQuestionnaireService
         }
     }
 
-    public async Task<UserQuestionnaireModel> Update(UserQuestionnaireModel model)
+    public async Task<UserQuestionnaireModel> Update(UserQuestionnaireUpdateModel model)
     {
         ThrowIfDisposed();
 
@@ -114,10 +140,13 @@ public class QuestionnareService : IQuestionnaireService
             throw new NotFoundException("Questionnare with this Id wasn't founded", nameof(model.Id));
         }
 
-        var userQuestionnaire = _mapper.Map<UserQuestionnaire>(model);
-        await _db.Questionnaires.UpdateAsync(userQuestionnaire);
+        questionnaire.Name = model.Name;
+        questionnaire.Surname = model.Surname;
+        questionnaire.BirthDate = model.BirthDate;
+        questionnaire.Address = _mapper.Map<Address>(model.Address);
+        questionnaire.Interests = _mapper.Map<List<Interest>>(model.Interests);
 
-        return model;
+        return _mapper.Map<UserQuestionnaireModel>(questionnaire);
     }
 
     public async Task<UserQuestionnaireModel> ResetStatistics(Guid userId)
@@ -226,5 +255,31 @@ public class QuestionnareService : IQuestionnaireService
             cfg.CreateMap<InterestModel, Interest>();
             cfg.CreateMap<Interest, InterestModel>();
         });
+    }
+
+    private List<List<double>> GetMatrixAllGrades()
+    {
+        var grades = _db.Grades.GetAll();
+        int countUsers = (int)Math.Sqrt(grades.Count);
+
+        List<List<double>> matrixsGrades = new();
+
+        for (int i = 0; i < countUsers; i++)
+        {
+            _userNumbers.Add(grades[i].UserId, i);
+            matrixsGrades.Add(new List<double>());
+
+            for (int j = 0; j < countUsers; j++)
+            {
+                matrixsGrades[i].Add((int)grades[i * countUsers + j].GradeValue);
+
+                if (i == 0)
+                {
+                    _questionnaireNumbers.Add(j, grades[i * countUsers + j].QuestionnaireId);
+                }
+            }
+        }
+
+        return matrixsGrades;
     }
 }
