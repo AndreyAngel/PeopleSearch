@@ -36,7 +36,7 @@
             <response code="404"> User with this Id wasn't founded </response>
             <response code="401"> Unauthorized </response>
         </member>
-        <member name="M:PeopleSearchAPI.Controllers.UserController.GetAccessToken(PeopleSearchAPI.Models.DTO.Requests.GetAccessTokenDTORequest)">
+        <member name="M:PeopleSearchAPI.Controllers.UserController.GetAccessTokens(PeopleSearchAPI.Models.DTO.Requests.GetAccessTokenDTORequest)">
             <summary>
             Get new access token with refresh token
             </summary>
@@ -275,13 +275,19 @@
             Refresh token
             </summary>
         </member>
-        <member name="M:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse.#ctor(System.Int32,System.String,System.String,System.String,System.Guid)">
+        <member name="P:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse.StreamChatToken">
+            <summary>
+            StreamChat token
+            </summary>
+        </member>
+        <member name="M:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse.#ctor(System.Int32,System.String,System.String,System.String,System.String,System.Guid)">
             <summary>
             Creates an instance of the <see cref="T:PeopleSearchAPI.Models.DTO.Response.AuthorizationDTOResponse"/>.
             </summary>
             <param name="expiresIn"> Access token lifetime in seconds </param>
             <param name="accessToken"> Access token </param>
             <param name="refreshToken"> Refresh token </param>
+            <param name="steramChatToken"> StreamChat token </param>
             <param name="tokenType"> Access token type </param>
             <param name="userId"> userId </param>
         </member>

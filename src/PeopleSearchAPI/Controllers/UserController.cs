@@ -88,11 +88,11 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(AuthorizationDTOResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.Forbidden)]
-    public async Task<IActionResult> GetAccessToken(GetAccessTokenDTORequest model)
+    public async Task<IActionResult> GetAccessTokens(GetAccessTokenDTORequest model)
     {
         try
         {
-            var response = await _userService.GetAccessToken(model.RefreshToken);
+            var response = await _userService.GetAccessTokens(model.RefreshToken);
             return Ok(response);
         }
         catch (SecurityException ex)

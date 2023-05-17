@@ -29,7 +29,7 @@ public interface IUserService
     /// <param name="refreshToken"> refresh token </param>
     /// <returns> The task object containing the action result of get access token </returns>
     /// <exception cref="SecurityException"> Incorrect refreshToken </exception>
-    Task<AuthorizationModel> GetAccessToken(string refreshToken);
+    Task<AuthorizationModel> GetAccessTokens(string refreshToken);
 
     /// <summary>
     /// Registration of the new user

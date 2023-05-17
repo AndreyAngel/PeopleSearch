@@ -31,22 +31,30 @@ public class AuthorizationDTOResponse : IDTOResponse
     public string RefreshToken { get; set; }
 
     /// <summary>
+    /// StreamChat token
+    /// </summary>
+    public string StreamChatToken { get; set; }
+
+    /// <summary>
     /// Creates an instance of the <see cref="AuthorizationDTOResponse"/>.
     /// </summary>
     /// <param name="expiresIn"> Access token lifetime in seconds </param>
     /// <param name="accessToken"> Access token </param>
     /// <param name="refreshToken"> Refresh token </param>
+    /// <param name="steramChatToken"> StreamChat token </param>
     /// <param name="tokenType"> Access token type </param>
     /// <param name="userId"> userId </param>
     public AuthorizationDTOResponse(int expiresIn,
                                     string accessToken,
                                     string refreshToken,
+                                    string steramChatToken,
                                     string tokenType,
                                     Guid userId)
     {
         ExpiresIn = expiresIn;
         AccessToken = accessToken;
         RefreshToken = refreshToken;
+        StreamChatToken = steramChatToken;
         TokenType = tokenType;
         UserId = userId;
     }

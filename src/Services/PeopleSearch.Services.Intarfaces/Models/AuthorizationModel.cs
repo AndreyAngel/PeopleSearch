@@ -41,6 +41,7 @@ public class AuthorizationModel : IBaseModel
     /// <param name="expiresIn"> Access token lifetime in seconds </param>
     /// <param name="accessToken"> Access token </param>
     /// <param name="refreshToken"> Refresh token </param>
+    /// <param name="streamChatToken"> StreamChat token </param>
     /// <param name="tokenType"> Access token type </param>
     /// <param name="userId"> userId </param>
     public AuthorizationModel(int expiresIn,

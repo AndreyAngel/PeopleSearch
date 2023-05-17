@@ -41,18 +41,11 @@ public static class JwtTokenHelper
     /// <param name="configuration"> Configurations of application </param>
     /// <param name="userId"> userId </param>
     /// <returns> JWT token for StreamChat </returns>
-    public static string GenereteJwtTokenForStreamChat(IConfiguration configuration, Guid userId)
+    public static string GenereteJwtTokenForStreamChat(IConfiguration configuration, IUserClient client, Guid userId)
     {
-        // Instantiate your Stream client factory using the API key and secret
-        // the secret is only used server side and gives you full access to the API.
-
-        var factory = new StreamClientFactory(configuration["Authentication:API_key"],
-                                              configuration["Authentication:Secret"]);
-
-        var userClient = factory.GetUserClient();
-
-        var token = userClient.CreateToken(userId: userId.ToString(), 
-                                           expiration: DateTimeOffset.UtcNow.AddHours(1),
+        var token = client.CreateToken(userId: userId.ToString(), 
+                                           expiration: DateTimeOffset.UtcNow.AddSeconds(
+                                                int.Parse(configuration["Authentication:LifeTimeAccessTokens"])),
                                            issuedAt: DateTimeOffset.UtcNow);
 
         return token;
@@ -95,12 +88,12 @@ public static class JwtTokenHelper
 
         if (tokenType == TokenType.Refresh)
         {
-            expirationTime = DateTime.UtcNow.AddMonths(3);
+            expirationTime = DateTime.UtcNow.AddSeconds(int.Parse(configuration["Authentication:LifeTimeRefreshToken"]));
         }
 
         else
         {
-            expirationTime = DateTime.UtcNow.AddMinutes(15);
+            expirationTime = DateTime.UtcNow.AddSeconds(int.Parse(configuration["Authentication:LifeTimeAccessTokens"]));
         }
 
         var token = new JwtSecurityToken(

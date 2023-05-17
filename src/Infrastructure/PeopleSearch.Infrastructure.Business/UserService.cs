@@ -13,6 +13,7 @@ using PeopleSearch.Services.Interfaces.Exceptions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security;
 using System.Security.Claims;
+using StreamChat.Clients;
 
 namespace PeopleSearch.Infrastructure.Business;
 
@@ -21,6 +22,8 @@ namespace PeopleSearch.Infrastructure.Business;
 /// </summary>
 public class UserService : UserManager<User>, IUserService
 {
+    private readonly IUserClient _userChatClient;
+
     /// <summary>
     /// Configurations of application
     /// </summary>
@@ -86,9 +89,17 @@ public class UserService : UserManager<User>, IUserService
             cfg.CreateMap<User, UserModel>();
             cfg.CreateMap<UserModel, User>()
                 .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.Email));
-    });
+        });
 
         _mapper = new Mapper(config);
+
+        // Instantiate your Stream client factory using the API key and secret
+        // the secret is only used server side and gives you full access to the API.
+
+        var factory = new StreamClientFactory(configuration["Authentication:API_key"],
+                                              configuration["Authentication:Secret"]);
+
+        _userChatClient = factory.GetUserClient();
     }
 
     /// <inheritdoc/>
@@ -155,7 +166,7 @@ public class UserService : UserManager<User>, IUserService
     }
 
     /// <inheritdoc/>
-    public async Task<AuthorizationModel> GetAccessToken(string refreshToken)
+    public async Task<AuthorizationModel> GetAccessTokens(string refreshToken)
     {
         ThrowIfDisposed();
         var validatedToken = JwtTokenHelper.ValidateToken(_configuration, refreshToken);
@@ -194,7 +205,13 @@ public class UserService : UserManager<User>, IUserService
     public async Task Logout(Guid userId)
     {
         ThrowIfDisposed();
+
         await Store.BlockTokens(userId);
+
+        var issuedBefore = DateTime.UtcNow.AddSeconds(-(int.Parse(_configuration["Authentication:LifeTimeAccessTokens"])));
+
+        // TODO: реализовать выход из StreamChat
+        //await _userChatClient.RevokeUserTokenAsync(userId.ToString(), issuedBefore:issuedBefore);
     }
 
     /// <inheritdoc/>
@@ -283,7 +300,7 @@ public class UserService : UserManager<User>, IUserService
 
         string refreshToken = JwtTokenHelper.GenerateJwtRefreshToken(_configuration, new List<Claim>() { claims[0] });
         string accessToken = JwtTokenHelper.GenerateJwtAccessToken(_configuration, claims);
-        string streamChatToken = JwtTokenHelper.GenereteJwtTokenForStreamChat(_configuration, userId);
+        string streamChatToken = JwtTokenHelper.GenereteJwtTokenForStreamChat(_configuration, _userChatClient, userId);
 
         await Store.BlockTokens(userId);
 
@@ -304,11 +321,11 @@ public class UserService : UserManager<User>, IUserService
             }
         });
 
-        return new AuthorizationModel(expiresIn: 900,
+        return new AuthorizationModel(expiresIn: int.Parse(_configuration["Authentication:LifeTimeAccessTokens"]),
                                       accessToken: accessToken,
                                       refreshToken: refreshToken,
                                       streamChatToken: streamChatToken,
-                                      tokenType: "Bearer",
+                                      tokenType: _configuration["Authentication:TokenType"],
                                       userId: userId);
     }
 }
