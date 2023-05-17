@@ -4,6 +4,7 @@ using PeopleSearch.Domain.Core.Enums;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using StreamChat.Clients;
 
 namespace PeopleSearch.Infrastructure.Business.Helpers;
 
@@ -32,6 +33,29 @@ public static class JwtTokenHelper
     public static string GenerateJwtAccessToken(IConfiguration configuration, List<Claim> claims)
     {
         return GenerateJwtToken(configuration, claims, TokenType.Access);
+    }
+
+    /// <summary>
+    /// Generate JWT token for StreamChat
+    /// </summary>
+    /// <param name="configuration"> Configurations of application </param>
+    /// <param name="userId"> userId </param>
+    /// <returns> JWT token for StreamChat </returns>
+    public static string GenereteJwtTokenForStreamChat(IConfiguration configuration, Guid userId)
+    {
+        // Instantiate your Stream client factory using the API key and secret
+        // the secret is only used server side and gives you full access to the API.
+
+        var factory = new StreamClientFactory(configuration["Authentication:API_key"],
+                                              configuration["Authentication:Secret"]);
+
+        var userClient = factory.GetUserClient();
+
+        var token = userClient.CreateToken(userId: userId.ToString(), 
+                                           expiration: DateTimeOffset.UtcNow.AddHours(1),
+                                           issuedAt: DateTimeOffset.UtcNow);
+
+        return token;
     }
 
     /// <summary>

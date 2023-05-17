@@ -242,7 +242,13 @@ public class UserService : UserManager<User>, IUserService
         base.Dispose(disposing);
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Authorization of the user
+    /// </summary>
+    /// <param name="user"> <see cref="User"/> </param>
+    /// <param name="password"> User password </param>
+    /// <returns> <see cref="AuthorizationModel"/> </returns>
+    /// <exception cref="IncorrectPasswordException"> Incorrect password </exception>
     private async Task<AuthorizationModel> Login(User user, string password)
     {
         ThrowIfDisposed();
@@ -256,7 +262,13 @@ public class UserService : UserManager<User>, IUserService
         return await GenerateTokens(new Guid(user.Id), roles[0]);
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Generate Jwt tokes
+    /// </summary>
+    /// <param name="userId"> User Id </param>
+    /// <param name="roleName"> User role </param>
+    /// <param name="claims"> User claims </param>
+    /// <returns> Refresh token, access token and token for StreamChat </returns>
     private async Task<AuthorizationModel> GenerateTokens(Guid userId, string roleName, List<Claim>? claims = null)
     {
         ThrowIfDisposed();
@@ -269,8 +281,9 @@ public class UserService : UserManager<User>, IUserService
             };
         }
 
-        var refreshToken = JwtTokenHelper.GenerateJwtRefreshToken(_configuration, new List<Claim>() { claims[0] });
-        var accessToken = JwtTokenHelper.GenerateJwtAccessToken(_configuration, claims);
+        string refreshToken = JwtTokenHelper.GenerateJwtRefreshToken(_configuration, new List<Claim>() { claims[0] });
+        string accessToken = JwtTokenHelper.GenerateJwtAccessToken(_configuration, claims);
+        string streamChatToken = JwtTokenHelper.GenereteJwtTokenForStreamChat(_configuration, userId);
 
         await Store.BlockTokens(userId);
 
@@ -291,6 +304,11 @@ public class UserService : UserManager<User>, IUserService
             }
         });
 
-        return new AuthorizationModel(900, accessToken, refreshToken, "Bearer", userId);
+        return new AuthorizationModel(expiresIn: 900,
+                                      accessToken: accessToken,
+                                      refreshToken: refreshToken,
+                                      streamChatToken: streamChatToken,
+                                      tokenType: "Bearer",
+                                      userId: userId);
     }
 }

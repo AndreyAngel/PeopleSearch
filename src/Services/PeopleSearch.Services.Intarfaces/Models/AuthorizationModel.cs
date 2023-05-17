@@ -31,6 +31,11 @@ public class AuthorizationModel : IBaseModel
     public string RefreshToken { get; set; }
 
     /// <summary>
+    /// StreamChat token
+    /// </summary>
+    public string StreamChatToken { get; set; }
+
+    /// <summary>
     /// Creates an instance of the <see cref="AuthorizationModel"/>.
     /// </summary>
     /// <param name="expiresIn"> Access token lifetime in seconds </param>
@@ -39,14 +44,16 @@ public class AuthorizationModel : IBaseModel
     /// <param name="tokenType"> Access token type </param>
     /// <param name="userId"> userId </param>
     public AuthorizationModel(int expiresIn,
-                                    string accessToken,
-                                    string refreshToken,
-                                    string tokenType,
-                                    Guid userId)
+                              string accessToken,
+                              string refreshToken,
+                              string streamChatToken,
+                              string tokenType,
+                              Guid userId)
     {
         ExpiresIn = expiresIn;
         AccessToken = accessToken;
         RefreshToken = refreshToken;
+        StreamChatToken = streamChatToken;
         TokenType = tokenType;
         UserId = userId;
     }
