@@ -44,9 +44,9 @@ public static class JwtTokenHelper
     public static string GenereteJwtTokenForStreamChat(IConfiguration configuration, IUserClient client, Guid userId)
     {
         var token = client.CreateToken(userId: userId.ToString(), 
-                                           expiration: DateTimeOffset.UtcNow.AddSeconds(
+                                       expiration: DateTimeOffset.UtcNow.AddSeconds(
                                                 int.Parse(configuration["Authentication:LifeTimeAccessTokens"])),
-                                           issuedAt: DateTimeOffset.UtcNow);
+                                       issuedAt: DateTimeOffset.UtcNow);
 
         return token;
     }

@@ -97,7 +97,7 @@ public class UserService : UserManager<User>, IUserService
         // the secret is only used server side and gives you full access to the API.
 
         var factory = new StreamClientFactory(configuration["Authentication:API_key"],
-                                              configuration["Authentication:Secret"]);
+                                              configuration["Authentication:SteramChatSecret"]);
 
         _userChatClient = factory.GetUserClient();
     }
