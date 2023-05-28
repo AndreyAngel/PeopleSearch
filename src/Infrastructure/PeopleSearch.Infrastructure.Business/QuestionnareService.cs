@@ -43,27 +43,31 @@ public class QuestionnareService : IQuestionnaireService
     {
         ThrowIfDisposed();
 
-        var recommendatedQuestionnaires = new List<UserQuestionnaireModel>();
+        var entities = new List<UserQuestionnaire>();
         var matrixAllGrades = GetMatrixAllGrades();
 
         if (matrixAllGrades.Count != 0)
         {
             SVD.Initialize(matrixAllGrades, 3);
             var predictions = SVD.Predict().Where(x => x.UserNumber == _userNumbers[userId]).ToList();
-            predictions.OrderBy(x => x.PredictedGrade);
+            predictions = new List<Prediction>(predictions.OrderBy(x => x.PredictedGrade));
 
             if (predictions.Count == 0)
             {
-                var entities = _db.Questionnaires.Include(x => x.Address, x => x.Interests);
-                recommendatedQuestionnaires = _mapper.Map<List<UserQuestionnaireModel>>(entities);
+                entities = _db.Questionnaires.Include(x => x.Address, x => x.Interests);
             }
-
-            for (int i = 0; i < predictions.Last().UserNumber; i++)
+            else
             {
-                var questionnaire = _db.Questionnaires.Include(x => x.Address, x => x.Interests)
-                                    .SingleOrDefault(x => x.Id == _questionnaireNumbers[predictions[i].ItemNumber]);
+                for (int i = 0; i < predictions.Last().UserNumber; i++)
+                {
+                    entities.Add(_db.Questionnaires.Include(x => x.Address, x => x.Interests)
+                                    .Single(x => x.Id == _questionnaireNumbers[predictions[i].ItemNumber]));
+                }
             }
         }
+
+        entities = _db.Questionnaires.Include(x => x.Address, x => x.Interests);
+        var recommendatedQuestionnaires = _mapper.Map<List<UserQuestionnaireModel>>(entities);
 
         return recommendatedQuestionnaires;
     }
