@@ -34,6 +34,8 @@ public class MappingProfile : Profile
 
         CreateMap<UserQuestionnaireModel, UserQuestionnaireDTOResponse>();
 
+        CreateMap<UserQuestionnaireModel, UserQuestionnaireListDTOResponse>();
+
         CreateMap<GradeDTORequest, GradeModel>();
 
         CreateMap<InterestDTO, InterestModel>();
