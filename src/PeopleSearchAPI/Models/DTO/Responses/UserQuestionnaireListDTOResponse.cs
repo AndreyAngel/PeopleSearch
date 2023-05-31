@@ -8,6 +8,11 @@ public class UserQuestionnaireListDTOResponse
     public Guid Id { get; set; }
 
     /// <summary>
+    /// User Id
+    /// </summary>
+    public Guid UserId { get; set; }
+
+    /// <summary>
     /// Name
     /// </summary>
     public string? Name { get; set; }
