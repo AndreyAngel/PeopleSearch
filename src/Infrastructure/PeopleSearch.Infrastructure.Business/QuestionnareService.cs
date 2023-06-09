@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration.Annotations;
 using Infrastructure.Exceptions;
 using PeopleSearch.Domain.Core.Entities;
 using PeopleSearch.Domain.Core.Enums;

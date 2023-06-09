@@ -8,9 +8,13 @@ using PeopleSearch.Services.Interfaces.Exceptions;
 using PeopleSearchAPI.Helpers;
 using PeopleSearchAPI.Models.DTO.Requests;
 using PeopleSearchAPI.Models.DTO.Responses;
+using System.Net;
 
 namespace PeopleSearchAPI.Controllers;
 
+/// <summary>
+/// Provides the APIs for handling all the questionnaire logic
+/// </summary>
 [Route("api/v1/[controller]/[action]")]
 [ApiController]
 [CustomAuthorize]
@@ -22,6 +26,12 @@ public class QuestionnaireController : ControllerBase
 
     private readonly IMapper _mapper;
 
+    /// <summary>
+    /// Creates an instance of the <see cref="QuestionnaireController"/>.
+    /// </summary>
+    /// <param name="questionnaireService"></param>
+    /// <param name="unitOfWork"></param>
+    /// <param name="mapper"></param>
     public QuestionnaireController(IQuestionnaireService questionnaireService,
                                     IUnitOfWork unitOfWork, IMapper mapper)
     {
@@ -30,7 +40,13 @@ public class QuestionnaireController : ControllerBase
         _questionnaireService = questionnaireService;
     }
 
+    /// <summary>
+    /// Get recommendations
+    /// </summary>
+    /// <returns> The action result of getting recommendations </returns>
+    /// <response code="200"> Successful completion </response>
     [HttpGet]
+    [ProducesResponseType(typeof(UserQuestionnaireListDTOResponse), (int)HttpStatusCode.OK)]
     public IActionResult GetRecommendations()
     {
         var user = HttpContext.Items["User"] as UserModel;
@@ -40,7 +56,16 @@ public class QuestionnaireController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Get questionnare by user Id
+    /// </summary>
+    /// <param name="userId"> User Id </param>
+    /// <returns> The action result of getting questionnaire </returns>
+    /// <response code="200"> Successful completion </response>
+    /// <response code="404"> The user questionnare wasn't founded </response>
     [HttpGet("{userId:Guid}")]
+    [ProducesResponseType(typeof(UserQuestionnaireDTOResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
     public IActionResult GetByUserId(Guid userId)
     {
         try
@@ -57,7 +82,14 @@ public class QuestionnaireController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Fill out a form
+    /// </summary>
+    /// <param name="request"> User questionnaire </param>
+    /// <returns> The task object contains the action result of creating user questionnaire </returns>
+    /// <response code="200"> Successful completion </response>
     [HttpPatch]
+    [ProducesResponseType(typeof(UserQuestionnaireDTOResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> FillOutAForm(UserQuestionnaireDTORequest request)
     {
         var model = _mapper.Map<UserQuestionnaireUpdateModel>(request);
@@ -76,7 +108,18 @@ public class QuestionnaireController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Put a grade
+    /// </summary>
+    /// <param name="request"> Grade </param>
+    /// <returns> The task contains the action result putting a grade </returns>
+    /// <response code="204"> Successful completion </response>
+    /// <response code="404"> The user questionnare wasn't founded </response>
+    /// <response code="409"> Grade for this questionnare is already put </response>
     [HttpPatch]
+    [ProducesResponseType(typeof(UserQuestionnaireDTOResponse), (int)HttpStatusCode.NoContent)]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
     public async Task<IActionResult> PutAGrade(GradeDTORequest request)
     {
         try
@@ -101,7 +144,14 @@ public class QuestionnaireController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Update user questionnaire
+    /// </summary>
+    /// <param name="request"> Updated user questionnare </param>
+    /// <returns> The task object contains the action result of updating user questionnaire </returns>
+    /// <response code="200"> Successful completion </response>
     [HttpPatch]
+    [ProducesResponseType(typeof(UserQuestionnaireDTOResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UserQuestionnaireDTORequest request)
     {
         var model = _mapper.Map<UserQuestionnaireUpdateModel>(request);
@@ -117,7 +167,13 @@ public class QuestionnaireController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Resert statistics
+    /// </summary>
+    /// <returns> The task object contains the action result of reserting statisctics </returns>
+    /// <response code="200"> Successful completion </response>
     [HttpPatch]
+    [ProducesResponseType(typeof(UserQuestionnaireDTOResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> ResetStatistics()
     {
         var user = HttpContext.Items["User"] as UserModel;
@@ -129,7 +185,13 @@ public class QuestionnaireController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Publish your questionnaire
+    /// </summary>
+    /// <returns> The task object contains the action result of publishing your questionnare </returns>
+    /// <response code="204"> Successful completion </response>
     [HttpPatch]
+    [ProducesResponseType(typeof(UserQuestionnaireDTOResponse), (int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Publish()
     {
         var user = HttpContext.Items["User"] as UserModel;
@@ -139,7 +201,13 @@ public class QuestionnaireController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Remove from publication
+    /// </summary>
+    /// <returns> The task object contains the action result of removing from publication </returns>
+    /// <response code="204"> Successful completion </response>
     [HttpPatch]
+    [ProducesResponseType(typeof(UserQuestionnaireDTOResponse), (int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> RemoveFromPublication()
     {
         var user = HttpContext.Items["User"] as UserModel;

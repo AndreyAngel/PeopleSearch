@@ -4,6 +4,82 @@
         <name>PeopleSearchAPI</name>
     </assembly>
     <members>
+        <member name="T:PeopleSearchAPI.Controllers.QuestionnaireController">
+            <summary>
+            Provides the APIs for handling all the questionnaire logic
+            </summary>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.QuestionnaireController.#ctor(PeopleSearch.Services.Interfaces.IQuestionnaireService,PeopleSearch.Domain.Interfaces.IUnitOfWork,AutoMapper.IMapper)">
+            <summary>
+            Creates an instance of the <see cref="T:PeopleSearchAPI.Controllers.QuestionnaireController"/>.
+            </summary>
+            <param name="questionnaireService"></param>
+            <param name="unitOfWork"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.QuestionnaireController.GetRecommendations">
+            <summary>
+            Get recommendations
+            </summary>
+            <returns> The action result of getting recommendations </returns>
+            <response code="200"> Successful completion </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.QuestionnaireController.GetByUserId(System.Guid)">
+            <summary>
+            Get questionnare by user Id
+            </summary>
+            <param name="userId"> User Id </param>
+            <returns> The action result of getting questionnaire </returns>
+            <response code="200"> Successful completion </response>
+            <response code="404"> The user questionnare wasn't founded </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.QuestionnaireController.FillOutAForm(PeopleSearchAPI.Models.DTO.Requests.UserQuestionnaireDTORequest)">
+            <summary>
+            Fill out a form
+            </summary>
+            <param name="request"> User questionnaire </param>
+            <returns> The task object contains the action result of creating user questionnaire </returns>
+            <response code="200"> Successful completion </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.QuestionnaireController.PutAGrade(PeopleSearchAPI.Models.DTO.Requests.GradeDTORequest)">
+            <summary>
+            Put a grade
+            </summary>
+            <param name="request"> Grade </param>
+            <returns> The task contains the action result putting a grade </returns>
+            <response code="204"> Successful completion </response>
+            <response code="404"> The user questionnare wasn't founded </response>
+            <response code="409"> Grade for this questionnare is already put </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.QuestionnaireController.Update(PeopleSearchAPI.Models.DTO.Requests.UserQuestionnaireDTORequest)">
+            <summary>
+            Update user questionnaire
+            </summary>
+            <param name="request"> Updated user questionnare </param>
+            <returns> The task object contains the action result of updating user questionnaire </returns>
+            <response code="200"> Successful completion </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.QuestionnaireController.ResetStatistics">
+            <summary>
+            Resert statistics
+            </summary>
+            <returns> The task object contains the action result of reserting statisctics </returns>
+            <response code="200"> Successful completion </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.QuestionnaireController.Publish">
+            <summary>
+            Publish your questionnaire
+            </summary>
+            <returns> The task object contains the action result of publishing your questionnare </returns>
+            <response code="204"> Successful completion </response>
+        </member>
+        <member name="M:PeopleSearchAPI.Controllers.QuestionnaireController.RemoveFromPublication">
+            <summary>
+            Remove from publication
+            </summary>
+            <returns> The task object contains the action result of removing from publication </returns>
+            <response code="204"> Successful completion </response>
+        </member>
         <member name="T:PeopleSearchAPI.Controllers.UserController">
             <summary>
             Provides the APIs for handling all the user logic
@@ -380,6 +456,11 @@
         <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireListDTOResponse.Id">
             <summary>
             Id
+            </summary>
+        </member>
+        <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireListDTOResponse.UserId">
+            <summary>
+            User Id
             </summary>
         </member>
         <member name="P:PeopleSearchAPI.Models.DTO.Responses.UserQuestionnaireListDTOResponse.Name">
